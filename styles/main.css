@@ -1,0 +1,28 @@
+﻿body {
+    font-family: sans-serif;
+    background-color: #0094ff;
+}
+td {
+    border-bottom: 1px solid black;
+}
+h1, h2 {
+    text-align: center;
+}
+#scenario {
+    width:  450px;
+    float: left;
+}
+#inventory {
+    width:  450px;
+    float: left;
+}
+#inventoryTable {
+    border-spacing: 4px;
+    width: 100%;
+}
+.panel {
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 5px;
+}

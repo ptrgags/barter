@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Barter</title>
+    <link href="styles/main.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="scripts/data.js"></script>
+    <script src="scripts/structures.js"></script>
+    <script src="scripts/main.js"></script>
+</head>
+<body onload="init();">
+    <div id="scenario" class="panel">
+        <h1 id="title"></h1>
+        <p id="description"></p>
+        <span id="options">
+        </span>
+    </div>
+    <div id="inventory" class="panel">
+        <h2>Inventory</h2>
+        <table id="inventoryTable" cellspacing="5px" cellpadding="2px">
+            <thead>
+                <tr>
+                    <td><b>Item</b></td>
+                    <td><b>Description</b></td>
+                    <td><b>Quantity</b></td>
+                </tr>
+            </thead>
+            <tbody id="inventoryContents">
+                <tr>
+                    <td>Pencil</td>
+                    <td>A pencil</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
