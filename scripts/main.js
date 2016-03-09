@@ -59,10 +59,11 @@ var generateButtons = function (situation) {
 
 //Create a generic button
 var createButton = function (label, action, option) {
-    var button = document.createElement("button");
-    button.innerHTML = label;
-    button.onclick = action;
-    button.disabled = !meetsRequirements(option);
+    var button = $("<button>")
+        .html(label)
+        .click(action)
+        .addClass("btn btn-default")
+        .prop("disabled", !meetsRequirements(option));
     return button;
 };
 
