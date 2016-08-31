@@ -37,15 +37,15 @@
         },
         "nancy": {
             "title": "Nancy",
-            "desc": "<b>Nancy</b>: Sorry, I don’t have an extra pen to give you. I have a bunch of mechanical pencil lead though if you want to trade something for it."
+            "desc": "<b>Nancy</b>: Sorry, I don't have an extra pen to give you. I have a bunch of mechanical pencil lead though if you want to trade something for it."
         },
         "sara": {
             "title": "Sara",
-            "desc": "<b>Sara</b>: I don’t have anything to give you, but I know that George has erasers, Biff has pens, and Nancy has mechanical pencil leads."
+            "desc": "<b>Sara</b>: I don't have anything to give you, but I know that George has erasers, Biff has pens, and Nancy has mechanical pencil leads."
         },
         "george": {
             "title": "George",
-            "desc": "<b>George</b>: I don’t have a pen but I have an eraser! You can have it if you can get me a couple of mechanical pencil leads."
+            "desc": "<b>George</b>: I don't have a pen but I have an eraser! You can have it if you can get me a couple of mechanical pencil leads."
         },
         "biff": {
             "title": "Biff",
