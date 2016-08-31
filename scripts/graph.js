@@ -30,7 +30,7 @@ class Situation {
  * information about what items are bartered.
  */
 class Option {
-    constructor(data) {
+    constructor(data, all_items) {
         //IDs of the source and destination
         //story nodes for this edge
         this.from = data.from;
@@ -56,13 +56,17 @@ class Option {
 
         //Items that are removed from inventory when this option
         //is selected. This is an array of pairs [item_id, quantity]
+        //in the data but is converted into an array of ItemStacks
         //Note: This option will be disabled if the
         //player does not yet have these items and quantities.
-        this.give_items = data.give_items || [];
+        data.give_items = data.give_items || [];
+        this.give_items = ItemStack.read_item_list(all_items, data.give_items);
 
         //Items that are added to the inventory when this option
         //is selected. This is an array of pairs [item_id, quantity]
-        this.take_items = data.take_items || [];
+        //in the JSON data but is converted into an array of ItemStacks
+        data.take_items = data.take_items || [];
+        this.take_items = ItemStack.read_item_list(all_items, data.take_items);
     }
 
     //TODO: Getter for the button label.
@@ -73,11 +77,11 @@ class Option {
  * that represents a complete story.
  */
 class StoryGraph {
-    constructor(story_data) {
+    constructor(story_data, all_items) {
         //Construct the situation nodes
         this.situations = {};
         for (var id in story_data.situations)
-            this.situations[id] = Situation(id, story_data.situations[id]);
+            this.situations[id] = new Situation(id, story_data.situations[id]);
 
         //Create an empty adjacency list
         this.options = {};
@@ -85,20 +89,31 @@ class StoryGraph {
             this.options[id] = [];
 
         //Populate it with options
-        for (var opt in story_data.options)  {
-            var option = Option(opt);
+        for (var opt of story_data.options)  {
+            var option = new Option(opt, all_items);
+
             this.options[option.from].push(option);
 
             //Add a "Back" option if needed
             if (option.back) {
-                var back_option = Option({
+                var back_option = new Option({
                     to: option.from,
                     from: option.to,
                     desc: "Back"
-                });
+                }, all_items);
                 this.options[option.to].push(back_option);
             }
         }
+
+        //Keep track of the id of the current vertex
+        this.current = story_data.start;
+    }
+
+    get current_situation() { return this.situations[this.current]; }
+
+    goto(next_situation) {
+        //Finally update the current vertex
+        this.current = next_situation;
     }
 }
 

@@ -14,6 +14,20 @@ class Item {
     toString() {
         return `Item(${this.id}, ${this.name})`;
     }
+
+
+    /**
+     * Go from a mapping of item_id -> {name, desc}
+     * to a mapping of item_id -> Item
+     */
+    static read_items(item_data) {
+        var items = {};
+        for (var id in item_data) {
+            var item = new Item(id, item_data[id]);
+            items[id] = item;
+        }
+        return items;
+    }
 }
 
 /**
@@ -31,6 +45,24 @@ class ItemStack {
 
     toString() {
         return `ItemStack(${this.id}, ${this.name}, ${this.quantity})`;
+    }
+
+    /**
+     * Go from an array of pairs [id, quantity] to an array of
+     * ItemStacks
+     * all_items -- an mapping of item_id -> Item
+     * item_list -- an array of [item_id, quantity]
+     */
+    static read_item_list(all_items, item_list)  {
+        var stacks = [];
+        for (var stack_arr of item_list) {
+            var item_id;
+            var item_quantity;
+            [item_id, item_quantity] = stack_arr;
+            var item = all_items[item_id];
+            stacks.push(new ItemStack(item, item_quantity));
+        }
+        return stacks;
     }
 }
 

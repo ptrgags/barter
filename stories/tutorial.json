@@ -141,5 +141,7 @@
         "one_time": true,
         "back": true,
         "take_items": [["paper", 1]]
-    }]
+    }],
+    "start": "intro",
+    "start_items": [["pencil", 1]]
 }

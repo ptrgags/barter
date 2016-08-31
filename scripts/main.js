@@ -1,25 +1,41 @@
 'use strict';
 
-$(document).ready(() => {
-    var item = new Item("test_item", {
-        name: "Test Item",
-        desc: "An Item for Testing"
+const barter = {};
+
+/**
+ * Send an AJAX request to get a story JSON file.
+ */
+var get_story = (story_name) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            dataType: "json",
+            url: `stories/${story_name}.json`,
+            success: resolve,
+            error: reject
+        });
     });
+};
 
-    var stack = new ItemStack(item, 3);
-    var inventory = new Inventory();
+var setup = (story_data) => {
+    //Master list of items for this story
+    barter.items = Item.read_items(story_data.items);
 
-    console.log(`${item}`);
-    console.log(`${stack}`);
-    console.log(`${inventory}`);
+    //Inventory
+    barter.inventory = new Inventory();
+    var start_inventory = ItemStack.read_item_list(
+        barter.items, story_data.start_items);
+    barter.inventory.add_item_stacks(start_inventory);
 
-    inventory.add_item_stack(stack);
-    console.log(`${inventory}`);
+    //Story graph
+    barter.graph = new StoryGraph(story_data, barter.items);
+}
 
-    var required = new ItemStack(item, 2);
-    inventory.remove_item_stack(required);
-    console.log(`${inventory}`);
-
-    inventory.remove_item_stack(required);
-    console.log(`${inventory}`);
+/**
+ * Startup sequence
+ */
+$(document).ready(() => {
+    //1. Get the story file
+    get_story('tutorial')
+        .then(setup)
+        .catch(console.err);
 });
