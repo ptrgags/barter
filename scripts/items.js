@@ -15,7 +15,6 @@ class Item {
         return `Item(${this.id}, ${this.name})`;
     }
 
-
     /**
      * Go from a mapping of item_id -> {name, desc}
      * to a mapping of item_id -> Item
@@ -44,7 +43,7 @@ class ItemStack {
     get desc() { return this.item.desc; }
 
     toString() {
-        return `ItemStack(${this.id}, ${this.name}, ${this.quantity})`;
+        return `<b>${this.name} (${this.quantity})</b>`;
     }
 
     /**
@@ -75,6 +74,17 @@ class Inventory {
         this.stacks = {};
     }
 
+    get html() {
+        var output = "";
+        for (var stack_id in this.stacks) {
+            var stack = this.stacks[stack_id];
+            output += `<tr><td>${stack.name}</td>`
+                + `<td>${stack.desc}</td>`
+                + `<td>${stack.quantity}</td></tr>`;
+        }
+        return output;
+    }
+
     //Add an array of item stacks to the inventory
     add_item_stacks(stacks) {
         for (var stack of stacks)
@@ -84,14 +94,14 @@ class Inventory {
     //Add a single item stack to the inventory
     add_item_stack(stack) {
         if (stack.id in this.stacks)
-            this.stacks[stack.id].quantity += stack.quanity;
+            this.stacks[stack.id].quantity += stack.quantity;
         else
             this.stacks[stack.id] = stack;
     }
 
     //Check if the inventory has all of the correct quantity
     //of items in an array of item stacks.
-    has_items(stacks) {
+    has_item_stacks(stacks) {
         for (var stack of stacks) {
             if(!this.has_item_stack(stack))
                 return false;
@@ -113,7 +123,7 @@ class Inventory {
     //an array of item stacks. On error, this throws
     //an Error object.
     remove_item_stacks(stacks) {
-        for (var stack in stacks)
+        for (var stack of stacks)
             this.remove_item_stack(stack);
     }
 
@@ -129,7 +139,7 @@ class Inventory {
         //the count reaches 0
         inv_stack.quantity -= stack.quantity;
         if (inv_stack.quantity === 0)
-            delete this.stack[stack.id];
+            delete this.stacks[stack.id];
     }
 
     toString() {

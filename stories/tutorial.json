@@ -89,7 +89,7 @@
         "back": true
     }, {
         "from": "classroom",
-        "to": "nancy",
+        "to": "biff",
         "desc": "Speak with Biff",
         "back": true
     }, {
@@ -133,11 +133,13 @@
     }, {
         "from": "search_room",
         "to": "search_floor",
+        "desc": "Search Floor",
         "one_time": true,
         "back": true
     }, {
         "from": "search_room",
         "to": "search_trash",
+        "desc": "Search Trash Can",
         "one_time": true,
         "back": true,
         "take_items": [["paper", 1]]

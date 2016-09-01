@@ -28,6 +28,9 @@ var setup = (story_data) => {
 
     //Story graph
     barter.graph = new StoryGraph(story_data, barter.items);
+
+    //Display the current scenario
+    update();
 }
 
 /**

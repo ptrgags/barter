@@ -69,7 +69,17 @@ class Option {
         this.take_items = ItemStack.read_item_list(all_items, data.take_items);
     }
 
-    //TODO: Getter for the button label.
+    get label() {
+        var give_items = this.give_items.join(", ")
+        var take_items = this.take_items.join(", ")
+        if (this.barter) {
+            return `Barter ${give_items} for ${take_items}`;
+        } else if (give_items) {
+            return `${this.desc} (Requires ${give_items})`;
+        } else {
+            return this.desc;
+        }
+    }
 }
 
 /**
@@ -110,10 +120,23 @@ class StoryGraph {
     }
 
     get current_situation() { return this.situations[this.current]; }
+    get current_options() { return this.options[this.current]; }
 
     goto(next_situation) {
-        //Finally update the current vertex
+        var option = this.current_options.find(x => x.to === next_situation);
+
+        //If the option was one-time, remove the edge from the graph.
+        if (option.one_time) {
+            this.options[this.current] = this.current_options.filter(x =>
+                x != option
+            );
+        }
+
+        //update the current vertex
         this.current = next_situation;
+
+        //Return the option we used to get to the new vertex
+        return option;
     }
 }
 
