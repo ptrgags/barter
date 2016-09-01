@@ -1,6 +1,6 @@
 'use strict';
 
-const barter = {};
+var barter = null;
 
 /**
  * Send an AJAX request to get a story JSON file.
@@ -17,19 +17,7 @@ var get_story = (story_name) => {
 };
 
 var setup = (story_data) => {
-    //Master list of items for this story
-    barter.items = Item.read_items(story_data.items);
-
-    //Inventory
-    barter.inventory = new Inventory();
-    var start_inventory = ItemStack.read_item_list(
-        barter.items, story_data.start_items);
-    barter.inventory.add_item_stacks(start_inventory);
-
-    //Story graph
-    barter.graph = new StoryGraph(story_data, barter.items);
-
-    //Display the current scenario
+    barter = new Barter(story_data);
     update();
 }
 

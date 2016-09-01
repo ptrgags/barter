@@ -81,7 +81,6 @@ class Option {
         }
     }
 }
-
 /**
  * Adjacency list of Situations and Options
  * that represents a complete story.
@@ -114,30 +113,10 @@ class StoryGraph {
                 this.options[option.to].push(back_option);
             }
         }
-
-        //Keep track of the id of the current vertex
-        this.current = story_data.start;
     }
 
-    get current_situation() { return this.situations[this.current]; }
-    get current_options() { return this.options[this.current]; }
-
-    goto(next_situation) {
-        var option = this.current_options.find(x => x.to === next_situation);
-
-        //If the option was one-time, remove the edge from the graph.
-        if (option.one_time) {
-            this.options[this.current] = this.current_options.filter(x =>
-                x != option
-            );
-        }
-
-        //update the current vertex
-        this.current = next_situation;
-
-        //Return the option we used to get to the new vertex
-        return option;
+    remove_option(situation_id, option) {
+        var options = this.options[situation_id];
+        this.options[situation_id] = options.filter(x => x != option);
     }
 }
-
-//TODO: Test the above

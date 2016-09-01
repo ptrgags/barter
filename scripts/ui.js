@@ -4,23 +4,20 @@ var display_situation = (situation) => {
 };
 
 var click_button = (event) => {
-    var option = $(event.currentTarget).data();
-    barter.graph.goto(option.to);
-    barter.inventory.remove_item_stacks(option.give_items);
-    barter.inventory.add_item_stacks(option.take_items);
+    var option = $(event.currentTarget).data("option");
+    barter.select_option(option);
     update();
 }
 
 var display_options = (options) => {
     $("#options").empty();
     for (var option of options) {
-        var is_enabled = barter.inventory.has_item_stacks(option.give_items);
         var button = $("<button>")
             .html(option.label)
-            .data(option)
+            .data("option", option)
             .click(click_button)
             .addClass("btn btn-default")
-            .prop("disabled", !is_enabled);
+            .prop("disabled", !barter.option_enabled(option));
         $("#options").append(button);
     }
 };
@@ -30,7 +27,7 @@ var display_inventory = (inventory) => {
 }
 
 var update = () => {
-    display_situation(barter.graph.current_situation);
-    display_options(barter.graph.current_options);
+    display_situation(barter.current_situation);
+    display_options(barter.current_options);
     display_inventory(barter.inventory);
 }
