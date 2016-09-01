@@ -67,6 +67,14 @@ class Option {
         //in the JSON data but is converted into an array of ItemStacks
         data.take_items = data.take_items || [];
         this.take_items = ItemStack.read_item_list(all_items, data.take_items);
+
+        //Set this to true when the option has been selected
+        this.visited = false;
+    }
+
+    //If this option can be selected. This is false only if one_time and visited
+    get is_enabled() {
+        return !this.one_time || !this.visited;
     }
 
     get label() {
@@ -113,10 +121,5 @@ class StoryGraph {
                 this.options[option.to].push(back_option);
             }
         }
-    }
-
-    remove_option(situation_id, option) {
-        var options = this.options[situation_id];
-        this.options[situation_id] = options.filter(x => x != option);
     }
 }

@@ -23,8 +23,11 @@ class Barter {
 
     get current_situation() { return this.story.situations[this.current]; }
     get current_options() {
+        //Filter out one-time options that have already been selected.
+        var options = this.story.options[this.current].filter(
+            x => x.is_enabled);
+
         //We want to put "Back" links at the end of the list
-        var options = this.story.options[this.current];
         var non_back_options = options.filter(x => x.desc !== 'Back');
         var back_options = options.filter(x => x.desc === 'Back');
         return non_back_options.concat(back_options);
@@ -35,19 +38,11 @@ class Barter {
     }
 
     select_option(option) {
-        this.transition(option);
+        option.visited = true;
+        this.current = option.to;
 
         //Update the player's inventory
         this.inventory.remove_item_stacks(option.give_items);
         this.inventory.add_item_stacks(option.take_items);
-    }
-
-    transition(option) {
-        //If the option was one-time, remove the edge from the graph.
-        if (option.one_time)
-            this.story.remove_option(this.current, option);
-
-        //update the current vertex
-        this.current = option.to;
     }
 }
