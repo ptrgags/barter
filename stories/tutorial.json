@@ -2,28 +2,23 @@
     "items": {
         "pencil": {
             "name": "Pencil",
-            "desc": "A spare pencil I brought with me for the exam.",
-            "type": "item"
+            "desc": "A spare pencil I brought with me for the exam."
         },
         "paper": {
             "name": "Paper",
-            "desc": "A sheet of paper.",
-            "type": "key-item"
+            "desc": "A sheet of paper."
         },
         "lead": {
             "name": "Pencil Lead",
-            "desc": "Mechanical pencil lead.",
-            "type": "key-item"
+            "desc": "Mechanical pencil lead."
         },
         "eraser": {
             "name": "Eraser",
-            "desc": "An eraser.",
-            "type": "key-item"
+            "desc": "An eraser."
         },
         "pen": {
             "name": "Pen",
-            "desc": "A pen. I need this for the exam.",
-            "type": "key-item"
+            "desc": "A pen. I need this for the exam."
         }
     },
     "situations": {
