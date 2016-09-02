@@ -1,0 +1,144 @@
+{
+    "items": {
+        "pencil": {
+            "name": "Pencil",
+            "desc": "A spare pencil I brought with me for the exam."
+        },
+        "paper": {
+            "name": "Paper",
+            "desc": "A sheet of paper."
+        },
+        "lead": {
+            "name": "Pencil Lead",
+            "desc": "Mechanical pencil lead."
+        },
+        "eraser": {
+            "name": "Eraser",
+            "desc": "An eraser."
+        },
+        "pen": {
+            "name": "Pen",
+            "desc": "A pen. I need this for the exam."
+        }
+    },
+    "situations": {
+        "intro": {
+            "title": "Intro",
+            "desc": "You are in a classroom the day of the math exam. You came prepared with an extra pencil, but when you arrived, you saw a note on the board: “Exams will be written in pen ONLY”. You realize you will have to obtain a pen from someone, as you do not have any. You consider asking Biff, who always seems to have extra school supplies."
+        },
+        "classroom": {
+            "title": "Classroom",
+            "desc": "You are in the classroom. What do you do?"
+        },
+        "nancy": {
+            "title": "Nancy",
+            "desc": "<b>Nancy</b>: Sorry, I don't have an extra pen to give you. I have a bunch of mechanical pencil lead though if you want to trade something for it."
+        },
+        "sara": {
+            "title": "Sara",
+            "desc": "<b>Sara</b>: I don't have anything to give you, but I know that George has erasers, Biff has pens, and Nancy has mechanical pencil leads."
+        },
+        "george": {
+            "title": "George",
+            "desc": "<b>George</b>: I don't have a pen but I have an eraser! You can have it if you can get me a couple of mechanical pencil leads."
+        },
+        "biff": {
+            "title": "Biff",
+            "desc": "<b>Biff</b>: I have an extra pen you could have, but I will need something in return. I could use an extra eraser; I have another exam after this one."
+        },
+        "search_room": {
+            "title": "Search Room",
+            "desc": "Where would you like to search?"
+        },
+        "search_trash": {
+            "title": "Search Trash Can",
+            "desc": "The only thing in the trashcan is a blank sheet of loose-leaf paper with a few creases in it. You think it might be useful."
+        },
+        "search_floor": {
+            "title": "Search Floor",
+            "desc": "You search the floor. You find nothing but dust."
+        },
+        "exam": {
+            "title": "Exam",
+            "desc": "Pen in hand, you sit down just in time to take the exam.<br/><br/><b>Tutorial Complete!</b>"
+        }
+    },
+    "options": [{
+        "from": "intro",
+        "to": "classroom",
+        "desc": "Continue"
+    },{
+        "from": "classroom",
+        "to": "nancy",
+        "desc": "Speak with Nancy",
+        "back": true
+    }, {
+        "from": "classroom",
+        "to": "sara",
+        "desc": "Speak with Sara",
+        "back": true
+    }, {
+        "from": "classroom",
+        "to": "george",
+        "desc": "Speak with George",
+        "back": true
+    }, {
+        "from": "classroom",
+        "to": "biff",
+        "desc": "Speak with Biff",
+        "back": true
+    }, {
+        "from": "classroom",
+        "to": "search_room",
+        "desc": "Search Room",
+        "back": true
+    }, {
+        "from": "classroom",
+        "to": "exam",
+        "desc": "Take Exam",
+        "give_items": [["pen", 1]]
+    }, {
+        "from": "nancy",
+        "to": "nancy",
+        "barter": true,
+        "one_time": true,
+        "give_items": [["pencil", 1]],
+        "take_items": [["lead", 1]]
+    }, {
+        "from": "nancy",
+        "to": "nancy",
+        "barter": true,
+        "one_time": true,
+        "give_items": [["paper", 1]],
+        "take_items": [["lead", 1]]
+    }, {
+        "from": "george",
+        "to": "george",
+        "barter": true,
+        "one_time": true,
+        "give_items": [["lead", 2]],
+        "take_items": [["eraser", 1]]
+    }, {
+        "from": "biff",
+        "to": "biff",
+        "barter": true,
+        "one_time": true,
+        "give_items": [["eraser", 1]],
+        "take_items": [["pen", 1]]
+    }, {
+        "from": "search_room",
+        "to": "search_floor",
+        "desc": "Search Floor",
+        "one_time": true,
+        "back": true
+    }, {
+        "from": "search_room",
+        "to": "search_trash",
+        "desc": "Search Trash Can",
+        "one_time": true,
+        "back": true,
+        "take_items": [["paper", 1]]
+    }],
+    "start": "intro",
+    "start_items": [["pencil", 1]]
+}
