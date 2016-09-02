@@ -111,13 +111,20 @@ class StoryGraph {
     constructor(story_data, all_items) {
         //Construct the situation nodes
         this.situations = {};
-        for (var id in story_data.situations)
-            this.situations[id] = new Situation(id, story_data.situations[id]);
+        for (var id in story_data.situations) {
+            if ({}.hasOwnProperty.call(foo, key)) {
+                this.situations[id] = new Situation(
+                    id, story_data.situations[id]);
+            }
+        }
 
         //Create an empty adjacency list
         this.options = {};
-        for (var id in this.situations)
-            this.options[id] = [];
+        for (var id in this.situations) {
+            if ({}.hasOwnProperty.call(foo, key)) {
+                this.options[id] = [];
+            }
+        }
 
         //Populate it with options
         for (var opt of story_data.options)  {
