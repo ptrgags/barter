@@ -24,7 +24,7 @@ class Item {
     static read_items(item_data) {
         var items = {};
         for (var id in item_data) {
-            if ({}.hasOwnProperty.call(foo, key)) {
+            if ({}.hasOwnProperty.call(item_data, id)) {
                 var item = new Item(id, item_data[id]);
                 items[id] = item;
             }
@@ -81,7 +81,7 @@ class Inventory {
     get html() {
         var output = '';
         for (var stack_id in this.stacks) {
-            if ({}.hasOwnProperty.call(foo, key)) {
+            if ({}.hasOwnProperty.call(this.stacks, stack_id)) {
                 var stack = this.stacks[stack_id];
                 output += `<tr><td>${stack.name}</td>`
                     + `<td>${stack.desc}</td>`
@@ -99,7 +99,7 @@ class Inventory {
 
     //Add a single item stack to the inventory
     add_item_stack(stack) {
-        if (stack.id in this.stacks) {
+        if (stack.id in this.stacks)
             this.stacks[stack.id].quantity += stack.quantity;
         else
             this.stacks[stack.id] = stack;
