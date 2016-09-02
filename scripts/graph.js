@@ -40,7 +40,7 @@ class Option {
         this.to = data.to;
 
         //Description for the option button.
-        this.desc = data.desc || "";
+        this.desc = data.desc || '';
 
         //If true, this option edge will be removed from
         //the graph after it is selected to prevent it
@@ -87,8 +87,8 @@ class Option {
      */
     get label() {
         //List the items with commas in between
-        var give_items = this.give_items.join(", ")
-        var take_items = this.take_items.join(", ")
+        var give_items = this.give_items.join(', ');
+        var take_items = this.take_items.join(', ');
 
         //Barter options list the items that are given/received
         if (this.barter) {
@@ -128,7 +128,7 @@ class StoryGraph {
                 var back_option = new Option({
                     to: option.from,
                     from: option.to,
-                    desc: "Back"
+                    desc: 'Back'
                 }, all_items);
                 back_option.is_back_link = true;
                 this.options[option.to].push(back_option);

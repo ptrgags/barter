@@ -75,7 +75,7 @@ class Inventory {
     }
 
     get html() {
-        var output = "";
+        var output = '';
         for (var stack_id in this.stacks) {
             var stack = this.stacks[stack_id];
             output += `<tr><td>${stack.name}</td>`
@@ -143,7 +143,7 @@ class Inventory {
     }
 
     toString() {
-        var output = "Inventory:"
+        var output = 'Inventory:';
         for (var stack_id in this.stacks) {
             var stack = this.stacks[stack_id];
             output += `\n${stack.id}: ${stack.quantity}`;

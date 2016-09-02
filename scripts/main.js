@@ -8,7 +8,7 @@ var barter = null;
 var get_story = (story_name) => {
     return new Promise((resolve, reject) => {
         $.ajax({
-            dataType: "json",
+            dataType: 'json',
             url: `stories/${story_name}.json`,
             success: resolve,
             error: reject
