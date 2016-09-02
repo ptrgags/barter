@@ -1,4 +1,4 @@
-/* global barter */
+/* global barter click_button */
 
 var display_situation = (situation) => {
     $('#title').html(situation.title);

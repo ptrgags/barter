@@ -1,6 +1,6 @@
 'use strict';
 
-/* global ItemStack */
+/* global ItemStack Situation Option */
 
 /**
  * A Situation is a vertex in the story graph.

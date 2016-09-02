@@ -1,6 +1,6 @@
 'use strict';
 
-/* global update Barter*/
+/* global update barter Barter */
 
 var barter = null;
 

@@ -1,6 +1,6 @@
 'use strict';
 
-/* global Item */
+/* global Item Inventory StoryGraph ItemStack */
 
 /**
  * Main class for representing the story data
