@@ -1,4 +1,11 @@
-﻿body {
+body {
+    background-color: #0094ff;
+}
+
+.btn-group-vertical {
+    width: 100%;
+}
+/*﻿body {
     font-family: sans-serif;
     background-color: #0094ff;
 }
@@ -26,3 +33,4 @@ h1, h2 {
     border-radius: 10px;
     margin: 5px;
 }
+*/
