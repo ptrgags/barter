@@ -21,7 +21,7 @@ var get_story = (story_name) => {
 var setup = (story_data) => {
     barter = new Barter(story_data);
     update();
-}
+};
 
 /**
  * Startup sequence

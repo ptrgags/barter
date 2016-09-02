@@ -1,3 +1,4 @@
+'use strict';
 /* global barter click_button */
 
 var display_situation = (situation) => {

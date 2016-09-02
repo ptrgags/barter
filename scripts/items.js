@@ -151,7 +151,7 @@ class Inventory {
     toString() {
         var output = 'Inventory:';
         for (var stack_id in this.stacks) {
-            if ({}.hasOwnProperty.call(foo, key)) {
+            if ({}.hasOwnProperty.call(this.stacks, stack_id)) {
                 var stack = this.stacks[stack_id];
                 output += `\n${stack.id}: ${stack.quantity}`;
             }
