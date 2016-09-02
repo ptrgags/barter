@@ -1,5 +1,6 @@
 'use strict';
 /* global barter click_button */
+/* eslint no-use-before-define: ["error", { "functions": false }] */
 
 var display_situation = (situation) => {
     $('#title').html(situation.title);
@@ -9,6 +10,7 @@ var display_situation = (situation) => {
 var display_inventory = (inventory) => {
     $('#inventoryContents').html(inventory.html);
 };
+
 
 var display_options = (options) => {
     $('#options').empty();
