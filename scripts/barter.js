@@ -1,5 +1,7 @@
 'use strict';
 
+/* global Item */
+
 /**
  * Main class for representing the story data
  */
@@ -34,11 +36,11 @@ class Barter {
         var options = this.story.options[this.current];
 
         //Divide the options into back links and non-back links
-        var back_options = options.filter(x => x.is_back_link);
-        var non_back_options = options.filter(x => !x.is_back_link);
+        var back_options = options.filter((x) => x.is_back_link);
+        var non_back_options = options.filter((x) => !x.is_back_link);
 
         //Only keep options that lead to unvisited content.
-        var available_options = non_back_options.filter(x =>
+        var available_options = non_back_options.filter((x) =>
             x.is_available && !this.story.situation_completed(x.to)
         );
 

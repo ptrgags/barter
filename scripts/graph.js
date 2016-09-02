@@ -1,5 +1,7 @@
 'use strict';
 
+/* global ItemStack */
+
 /**
  * A Situation is a vertex in the story graph.
  * It represents one location/story element
@@ -91,15 +93,14 @@ class Option {
         var take_items = this.take_items.join(', ');
 
         //Barter options list the items that are given/received
-        if (this.barter) {
+        if (this.barter)
             return `Barter ${give_items} for ${take_items}`;
         //Options that require only giving items show what's needed
-        } else if (give_items) {
+        else if (give_items)
             return `${this.desc} (Requires ${give_items})`;
         //Otherwise, just display the description.
-        } else {
+        else
             return this.desc;
-        }
     }
 }
 /**
