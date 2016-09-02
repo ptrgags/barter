@@ -21,6 +21,9 @@ class Situation {
         //The longer description that goes in
         //the body of the story panel.
         this.desc = data.desc;
+
+        //True if this situation has been visited
+        this.visited = false;
     }
 }
 
@@ -49,10 +52,9 @@ class Option {
         //description.
         this.barter = data.barter || false;
 
-        //If true, the destination story node will
-        //get an option called "back" to return to the
-        //source node.
-        this.back = data.back || false;
+        //If true, this link is a back link, which gets treated slightly
+        //differently when pruning options
+        this.is_back_link = false;
 
         //Items that are removed from inventory when this option
         //is selected. This is an array of pairs [item_id, quantity]
@@ -72,18 +74,29 @@ class Option {
         this.visited = false;
     }
 
-    //If this option can be selected. This is false only if one_time and visited
-    get is_enabled() {
-        return !this.one_time || !this.visited;
+    /*
+     * If this option can be selected. This is false only
+     * if one_time AND visited or if this link is a back link
+     */
+    get is_available() {
+        return this.is_back_link || !this.one_time || !this.visited;
     }
 
+    /**
+     * Format the label for the option button.
+     */
     get label() {
+        //List the items with commas in between
         var give_items = this.give_items.join(", ")
         var take_items = this.take_items.join(", ")
+
+        //Barter options list the items that are given/received
         if (this.barter) {
             return `Barter ${give_items} for ${take_items}`;
+        //Options that require only giving items show what's needed
         } else if (give_items) {
             return `${this.desc} (Requires ${give_items})`;
+        //Otherwise, just display the description.
         } else {
             return this.desc;
         }
@@ -108,18 +121,30 @@ class StoryGraph {
         //Populate it with options
         for (var opt of story_data.options)  {
             var option = new Option(opt, all_items);
-
             this.options[option.from].push(option);
 
             //Add a "Back" option if needed
-            if (option.back) {
+            if (opt.back) {
                 var back_option = new Option({
                     to: option.from,
                     from: option.to,
                     desc: "Back"
                 }, all_items);
+                back_option.is_back_link = true;
                 this.options[option.to].push(back_option);
             }
         }
+    }
+
+    //Check if a given situation has been visited and completely explored,
+    //not including back links
+    situation_completed(situation_id) {
+        for (var opt of this.options[situation_id]) {
+            if (opt.is_back_link)
+                continue;
+            if (opt.is_available)
+                return false;
+        }
+        return this.situations[situation_id].visited;
     }
 }

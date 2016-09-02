@@ -19,27 +19,52 @@ class Barter {
 
         //Current situation in the story graph
         this.current = story_data.start;
+        this.current_situation.visited = true;
     }
 
     get current_situation() { return this.story.situations[this.current]; }
-    get current_options() {
-        //Filter out one-time options that have already been selected.
-        var options = this.story.options[this.current].filter(
-            x => x.is_enabled);
 
-        //We want to put "Back" links at the end of the list
-        var non_back_options = options.filter(x => x.desc !== 'Back');
-        var back_options = options.filter(x => x.desc === 'Back');
-        return non_back_options.concat(back_options);
+    /**
+     * Get a list of the currently available options. Back links are always
+     * available and are moved to the end of the list. Non-back options
+     * need to be checked for availability.
+     */
+    get current_options() {
+        //Get all the options for the current situations
+        var options = this.story.options[this.current];
+
+        //Divide the options into back links and non-back links
+        var back_options = options.filter(x => x.is_back_link);
+        var non_back_options = options.filter(x => !x.is_back_link);
+
+        //Only keep options that lead to unvisited content.
+        var available_options = non_back_options.filter(x =>
+            x.is_available && !this.story.situation_completed(x.to)
+        );
+
+        //Put the back links at the end of the list.
+        return available_options.concat(back_options);
     }
 
+    /**
+     * For an available option, check if the inventory has the
+     * required items.
+     */
     option_enabled(option) {
         return this.inventory.has_item_stacks(option.give_items);
     }
 
+    /**
+     * When an Option is selected, advance to the next
+     * situation and make any needed changes to the inventory.
+     */
     select_option(option) {
+        //Mark the option as visited
         option.visited = true;
+
+        //Move to the next situation and mark it as visited
         this.current = option.to;
+        this.current_situation.visited = true;
 
         //Update the player's inventory
         this.inventory.remove_item_stacks(option.give_items);
