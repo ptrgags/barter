@@ -1,5 +1,7 @@
 'use strict';
 
+/* global ItemStack Situation Option StoryGraph */
+
 /**
  * A Situation is a vertex in the story graph.
  * It represents one location/story element
@@ -40,7 +42,7 @@ class Option {
         this.to = data.to;
 
         //Description for the option button.
-        this.desc = data.desc || "";
+        this.desc = data.desc || '';
 
         //If true, this option edge will be removed from
         //the graph after it is selected to prevent it
@@ -56,6 +58,17 @@ class Option {
         //differently when pruning options
         this.is_back_link = false;
 
+        //Initialize the items.
+        this.init_items(all_items, data);
+
+        //Set this to true when the option has been selected
+        this.visited = false;
+    }
+
+    /**
+     * Convert listed item IDs to actual ItemStacks.
+     */
+    init_items(all_items, data) {
         //Items that are removed from inventory when this option
         //is selected. This is an array of pairs [item_id, quantity]
         //in the data but is converted into an array of ItemStacks
@@ -69,9 +82,6 @@ class Option {
         //in the JSON data but is converted into an array of ItemStacks
         data.take_items = data.take_items || [];
         this.take_items = ItemStack.read_item_list(all_items, data.take_items);
-
-        //Set this to true when the option has been selected
-        this.visited = false;
     }
 
     /*
@@ -87,19 +97,18 @@ class Option {
      */
     get label() {
         //List the items with commas in between
-        var give_items = this.give_items.join(", ")
-        var take_items = this.take_items.join(", ")
+        var give_items = this.give_items.join(', ');
+        var take_items = this.take_items.join(', ');
 
         //Barter options list the items that are given/received
-        if (this.barter) {
+        if (this.barter)
             return `Barter ${give_items} for ${take_items}`;
         //Options that require only giving items show what's needed
-        } else if (give_items) {
+        else if (give_items)
             return `${this.desc} (Requires ${give_items})`;
         //Otherwise, just display the description.
-        } else {
+        else
             return this.desc;
-        }
     }
 }
 /**
@@ -109,15 +118,43 @@ class Option {
 class StoryGraph {
     constructor(story_data, all_items) {
         //Construct the situation nodes
+        this.populate_situations(story_data);
+
+        //Construct the option adjacency list
+        this.empty_adjacency_list();
+        this.populate_options(story_data, all_items);
+    }
+
+    /*
+     * Read the story data and create a mapping
+     * of situation_id -> Situation
+     */
+    populate_situations(story_data) {
         this.situations = {};
-        for (var id in story_data.situations)
-            this.situations[id] = new Situation(id, story_data.situations[id]);
+        for (var id in story_data.situations) {
+            if ({}.hasOwnProperty.call(story_data.situations, id)) {
+                this.situations[id] = new Situation(
+                    id, story_data.situations[id]);
+            }
+        }
+    }
 
-        //Create an empty adjacency list
+    /**
+     * Initialize the adjacency list for every
+     * situation in the graph.
+     */
+    empty_adjacency_list() {
         this.options = {};
-        for (var id in this.situations)
-            this.options[id] = [];
+        for (var id in this.situations) {
+            if ({}.hasOwnProperty.call(this.situations, id))
+                this.options[id] = [];
+        }
+    }
 
+    /**
+     * Read the story data and populate the adjacency list
+     */
+    populate_options(story_data, all_items) {
         //Populate it with options
         for (var opt of story_data.options)  {
             var option = new Option(opt, all_items);
@@ -128,7 +165,7 @@ class StoryGraph {
                 var back_option = new Option({
                     to: option.from,
                     from: option.to,
-                    desc: "Back"
+                    desc: 'Back'
                 }, all_items);
                 back_option.is_back_link = true;
                 this.options[option.to].push(back_option);

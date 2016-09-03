@@ -1,5 +1,7 @@
 'use strict';
 
+/* global Item ItemStack */
+
 /**
  * Plain old struct that represents an item in a
  * story
@@ -22,8 +24,10 @@ class Item {
     static read_items(item_data) {
         var items = {};
         for (var id in item_data) {
-            var item = new Item(id, item_data[id]);
-            items[id] = item;
+            if ({}.hasOwnProperty.call(item_data, id)) {
+                var item = new Item(id, item_data[id]);
+                items[id] = item;
+            }
         }
         return items;
     }
@@ -75,12 +79,14 @@ class Inventory {
     }
 
     get html() {
-        var output = "";
+        var output = '';
         for (var stack_id in this.stacks) {
-            var stack = this.stacks[stack_id];
-            output += `<tr><td>${stack.name}</td>`
-                + `<td>${stack.desc}</td>`
-                + `<td>${stack.quantity}</td></tr>`;
+            if ({}.hasOwnProperty.call(this.stacks, stack_id)) {
+                var stack = this.stacks[stack_id];
+                output += `<tr><td>${stack.name}</td>`
+                    + `<td>${stack.desc}</td>`
+                    + `<td>${stack.quantity}</td></tr>`;
+            }
         }
         return output;
     }
@@ -143,10 +149,12 @@ class Inventory {
     }
 
     toString() {
-        var output = "Inventory:"
+        var output = 'Inventory:';
         for (var stack_id in this.stacks) {
-            var stack = this.stacks[stack_id];
-            output += `\n${stack.id}: ${stack.quantity}`;
+            if ({}.hasOwnProperty.call(this.stacks, stack_id)) {
+                var stack = this.stacks[stack_id];
+                output += `\n${stack.id}: ${stack.quantity}`;
+            }
         }
         return output;
     }
