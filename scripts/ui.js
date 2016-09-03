@@ -1,6 +1,5 @@
 'use strict';
 /* global barter click_button */
-/* eslint no-use-before-define: ["error", { "functions": false }] */
 
 var display_situation = (situation) => {
     $('#title').html(situation.title);
