@@ -1,5 +1,7 @@
 'use strict';
 
+/* global update barter Barter */
+
 var barter = null;
 
 /**
@@ -8,7 +10,7 @@ var barter = null;
 var get_story = (story_name) => {
     return new Promise((resolve, reject) => {
         $.ajax({
-            dataType: "json",
+            dataType: 'json',
             url: `stories/${story_name}.json`,
             success: resolve,
             error: reject
@@ -19,7 +21,7 @@ var get_story = (story_name) => {
 var setup = (story_data) => {
     barter = new Barter(story_data);
     update();
-}
+};
 
 /**
  * Startup sequence
