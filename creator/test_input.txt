@@ -1,0 +1,8 @@
+edit_item banana
+Banana
+Have you taken Defense against Fresh Fruit?
+edit_item knife
+Knife
+A sharp knife. Perfect for cooking (or murder).
+save foo.json
+quit
