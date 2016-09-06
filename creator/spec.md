@@ -40,7 +40,7 @@ Option Commands:
 Story Graph Commands:
 
 * `set_title` - Set the title for the story.
-* `export <fname>` - Save the story in JSON format to file `fname`
+* `save <fname>` - Save the story in JSON format to file `fname`
 * `show_graph <png|svg>` - Compile a Graphviz diagram for the story graph in
     the given format.
 * `goto <situation_id>` - Change the current situation to the one with

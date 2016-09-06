@@ -10,6 +10,9 @@ class StoryCreator
     def initialize
         @items = {}
         @situations = {}
+
+        # Current situation ID
+        @current = ""
     end
 
     def help
@@ -61,6 +64,22 @@ class StoryCreator
         @situations.delete(id)
     end
 
+    def current_situation
+        @situations[@current]
+    end
+
+    def goto args
+        _, id = args
+        if @situations.has_key? id
+            puts "Moving from #{@current} -> #{id}"
+            @current = id
+            puts "Current situation:"
+            puts current_situation
+        else
+            puts "Situation '#{id}' does not exist"
+        end
+    end
+
     def to_hash
         {
             "items" => Hash[@items.map{|id, item| [id, item.to_hash]}],
@@ -81,6 +100,7 @@ class StoryCreator
         exit 0
     end
 
+    # TODO: Refactor this to use the readline library
     def parse_command command
         args = command.split(' ')
         case args[0]
@@ -96,6 +116,8 @@ class StoryCreator
             edit_situation args
         when "delete_situation"
             delete_situation args
+        when "goto"
+            goto args
         when "save"
             save args
         when "help"

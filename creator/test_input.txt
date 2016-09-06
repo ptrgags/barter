@@ -9,5 +9,9 @@ edit_situation intro
 Introduction
 edit_situation ship
 The Ship
+goto foo
+goto intro
+goto ship
+goto foo
 save foo.json
 quit
