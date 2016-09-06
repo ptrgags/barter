@@ -4,12 +4,14 @@ require 'json'
 require_relative 'ui'
 require_relative 'Item'
 require_relative 'Situation'
+require_relative 'Option'
 
 class StoryCreator
 
     def initialize
         @items = {}
         @situations = {}
+        @options = {}
 
         # Current situation ID
         @current = ""
@@ -24,7 +26,12 @@ class StoryCreator
         puts "list_situations - list all situations"
         puts "edit_situation <id> - create/edit a situation"
         puts "delete_situation <id> - delete a situation"
+        puts "list_options - list all options for the current situation"
+        puts "add_option <id> - add an option from the current situation -> <id>"
+        puts "edit_option <index> - edit the option from the list in list_options"
+        puts "delete_option <index> - Delete an option with the index "
         puts "save <fname> - save the final JSON file"
+        puts "goto <id> - Set the current situation pointer to <id>"
         puts "quit - exit the program, saving data"
         puts "exit - same as quit"
     end
@@ -55,6 +62,9 @@ class StoryCreator
         _, id = args
         puts "Edit situation with ID #{id}"
         @situations[id] = Situation.from_input id
+        if @options[id].nil?
+            @options[id] = []
+        end
     end
 
     # TODO: Prompt to delete the text file
@@ -62,6 +72,27 @@ class StoryCreator
         _, id = args
         puts "Delete situation with ID #{id}"
         @situations.delete(id)
+    end
+
+    def list_options
+        puts "All Options:"
+        @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
+    end
+
+    def add_option args
+        _, to = args
+        puts "Add option from #{@current} -> #{to}:"
+        @options[@current].push(Option.from_input @current, to)
+    end
+
+    def edit_option args
+        puts "TODO!"
+    end
+
+    def delete_option args
+        _, index = args
+        puts "Delete option ##{index}:"
+        @options[@current].delete_at(index)
     end
 
     def current_situation
@@ -83,7 +114,8 @@ class StoryCreator
     def to_hash
         {
             "items" => Hash[@items.map{|id, item| [id, item.to_hash]}],
-            "situations" => Hash[@situations.map{|id, sit| [id, sit.to_hash]}]
+            "situations" => Hash[@situations.map{|id, sit| [id, sit.to_hash]}],
+            "options" => @options.values.flatten.map {|opt| opt.to_hash}
         }
     end
 
@@ -116,6 +148,12 @@ class StoryCreator
             edit_situation args
         when "delete_situation"
             delete_situation args
+        when "list_options"
+            list_options
+        when "add_option"
+            add_option args
+        when "delete_option"
+            delete_option args
         when "goto"
             goto args
         when "save"

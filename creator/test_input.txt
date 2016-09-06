@@ -4,14 +4,17 @@ Have you taken Defense against Fresh Fruit?
 edit_item knife
 Knife
 A sharp knife. Perfect for cooking (or murder).
-save foo.json
+list_items
 edit_situation intro
 Introduction
 edit_situation ship
 The Ship
-goto foo
+list_situations
 goto intro
-goto ship
-goto foo
+add_option ship
+Continue
+add_option intro
+Perform Magic
+add_options
 save foo.json
 quit
