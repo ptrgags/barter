@@ -46,3 +46,6 @@ Story Graph Commands:
 * `goto <situation_id>` - Change the current situation to the one with
     id `<situation_id>`
 * `show_situation` - Show the current situation and all its options.
+* `show_json` - Show the current JSON representation
+* `set_start <situation_id>` - Set the start node for the story
+* `set_start_items` - Set the start items.

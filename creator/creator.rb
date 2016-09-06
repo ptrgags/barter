@@ -15,6 +15,7 @@ class StoryCreator
 
         # Current situation ID
         @current = ""
+        @start_situation = ""
     end
 
     def help
@@ -31,6 +32,7 @@ class StoryCreator
         puts "edit_option <index> - edit the option from the list in list_options"
         puts "delete_option <index> - Delete an option with the index "
         puts "save <fname> - save the final JSON file"
+        puts "set_start <id> - set the start node"
         puts "goto <id> - Set the current situation pointer to <id>"
         puts "quit - exit the program, saving data"
         puts "exit - same as quit"
@@ -99,6 +101,11 @@ class StoryCreator
         @situations[@current]
     end
 
+    def set_start args
+        _, id = args
+        @start_situation = id
+    end
+
     def goto args
         _, id = args
         if @situations.has_key? id
@@ -115,8 +122,13 @@ class StoryCreator
         {
             "items" => Hash[@items.map{|id, item| [id, item.to_hash]}],
             "situations" => Hash[@situations.map{|id, sit| [id, sit.to_hash]}],
-            "options" => @options.values.flatten.map {|opt| opt.to_hash}
+            "options" => @options.values.flatten.map {|opt| opt.to_hash},
+            "start" => @start_situation,
         }
+    end
+
+    def show_json
+        puts JSON.pretty_generate(to_hash)
     end
 
     def save args
@@ -154,12 +166,16 @@ class StoryCreator
             add_option args
         when "delete_option"
             delete_option args
+        when "set_start"
+            set_start args
         when "goto"
             goto args
         when "save"
             save args
         when "help"
             help
+        when "show_json"
+            show_json
         when "quit", "exit"
             bye
         else

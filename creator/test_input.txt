@@ -15,6 +15,8 @@ add_option ship
 Continue
 add_option intro
 Perform Magic
-add_options
+list_options
+set_start intro
+show_json
 save foo.json
 quit
