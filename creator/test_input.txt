@@ -5,4 +5,9 @@ edit_item knife
 Knife
 A sharp knife. Perfect for cooking (or murder).
 save foo.json
+edit_situation intro
+Introduction
+edit_situation ship
+The Ship
+save foo.json
 quit

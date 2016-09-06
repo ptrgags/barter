@@ -6,7 +6,7 @@ require_relative 'Item'
 require_relative 'Situation'
 
 class StoryCreator
-    
+
     def initialize
         @items = {}
         @situations = {}
@@ -61,16 +61,18 @@ class StoryCreator
         @situations.delete(id)
     end
 
+    def to_hash
+        {
+            "items" => Hash[@items.map{|id, item| [id, item.to_hash]}],
+            "situations" => Hash[@situations.map{|id, sit| [id, sit.to_hash]}]
+        }
+    end
+
     def save args
         _, fname = args
         puts "saving to #{fname}"
-        # TODO: These should be converted to hashes
-        data = {
-            "items" => @items,
-            "situations" => @situations
-        }
         File.open(fname, "w") do |f|
-            f.write(JSON.pretty_generate(data))
+            f.write(JSON.pretty_generate(to_hash))
         end
     end
 
