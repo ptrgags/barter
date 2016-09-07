@@ -16,12 +16,14 @@ story graph to a PNG or SVG file.
 Item Commands:
 
 * `list_items` - List all items in the story
+* `add_item <item_id>` - Create a new item
 * `edit_item <item_id>` - Create/Edit an item with id `item_id`
 * `delete_item <item_id>` - Delete an item with id `item_id`
 
 Situation Commands
 
 * `list_situations` - List all the situations in the story
+* `add_situation <situation_id>` - Create a new situation.
 * `edit_situation <situation_id>` - Create/Edit a situation. This will create
     a text file `situations/<situation_id>.txt` where the author can write
     a long description for the situation
@@ -31,15 +33,15 @@ Situation Commands
 Option Commands:
 
 * `list_options` - Show all the options for the current situation
-* `edit_option <to_situation_id>` - Create/edit an option from the current
+* `add_option <to_situation_id>` - Create/edit an option from the current
     situation vertex to the situation `to_situation_id`.
+* `edit_option <option_id>` - Edit existing option with numeric option id.
 * `delete_option <option_id>` delete the option with the numeric option id.
     run `list_options` or `show_situation` to find the ID numbers as these
     may change frequently.
 
 Story Graph Commands:
 
-* `set_title` - Set the title for the story.
 * `save <fname>` - Save the story in JSON format to file `fname`
 * `show_graph <png|svg>` - Compile a Graphviz diagram for the story graph in
     the given format.

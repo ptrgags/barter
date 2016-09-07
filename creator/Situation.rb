@@ -20,6 +20,10 @@ class Situation
         "#{@id}: #{@title}"
     end
 
+    def edit
+        @title = prompt_edit_str "Situation Title:", @title
+    end
+
     # Create a Situation from an ID and hash
     # This data is from the JSON
     def self.from_hash id, data

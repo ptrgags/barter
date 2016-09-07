@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'json'
 require 'readline'
+require 'fileutils'
 
 require_relative 'ui'
 require_relative 'Item'
@@ -68,7 +69,12 @@ class StoryCreator
 
         # Current situation ID
         @current = ""
+
+        # Start situation for this story
         @start_situation = ""
+
+        # Path to directory where story will be stored
+        @story_dirname = ""
     end
 
     def help args
@@ -77,7 +83,7 @@ class StoryCreator
         # General commmands
         puts "help - display this help"
         puts "set_start <id> - set the start node"
-        puts "save <fname> - save the final JSON file"
+        puts "save <fname> - save the final JSON file into the story directory"
         puts "quit - exit the program, saving data"
         puts "goto <id> - Set the current situation pointer to <id>"
         puts "bye - same as quit"
@@ -144,30 +150,81 @@ class StoryCreator
         @situations.each {|id, situation| puts situation}
     end
 
+    def add_situation args
+        _, id = args 
+        if @situations.has_key? id
+            edit_situation args
+        else
+            puts "Add situation with ID #{id}"
+            @situations[id] = Situation.from_input id
+
+            
+            # TODO: This should be moved to Situation
+            fname = File.join @story_dirname, "#{id}.txt"
+            puts "Creating file #{fname}"
+            File.open(fname, "w") do |f|
+                f.puts "# Write the description for situation #{id} here:"
+            end
+            
+            @options[id] = []
+        end
+    end
+
     def edit_situation args
         _, id = args
-        puts "Edit situation with ID #{id}"
-        @situations[id] = Situation.from_input id
-        if @options[id].nil?
-            @options[id] = []
+        if not @situations.has_key? id
+            add_situation args
+        else
+            puts "Edit situation with ID #{id}"
+            @situations[id].edit
         end
     end
 
     # TODO: Prompt to delete the text file
     def delete_situation args
         _, id = args
-        puts "Delete situation with ID #{id}"
-        @situations.delete(id)
+        if @situations.has_key? id
+            puts "Delete situation with ID #{id}"
+            @situations.delete(id)
+
+            # TODO: This should be moved to Situation
+            fname = File.join @story_dirname, "#{id}.txt"
+            delete_file = prompt_approval "Delete file #{fname}?"
+            if delete_file
+                begin
+                    FileUtils.rm_f(fname)
+                rescue Exception => e
+                    puts "Error deleting #{fname}: #{e.message}"
+                end
+            end
+
+            delete_opts = prompt_approval "Delete options for situation #{id}?"
+            if delete_opts
+                puts "Removing options for situation #{id}"
+                opts = @options.reject{|sit_id, items| sit_id == id}
+                opts = opts.map do |sit_id, items|
+                    [sit_id, items.reject {|item| item.to_id == id}]
+                end
+                @options = Hash[opts]
+            end
+                    
+        else
+            puts "Sorry, situation #{id} does not exist!"
+        end
+    end
+
+    def display_options
+        @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
     end
 
     def show_situation args
         puts current_situation
-        @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
+        display_options
     end
 
     def list_options args
         puts "All Options:"
-        @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
+        display_options
     end
 
     def add_option args
@@ -183,7 +240,7 @@ class StoryCreator
     def delete_option args
         _, index = args
         puts "Delete option ##{index}:"
-        @options[@current].delete_at(index)
+        @options[@current].delete_at(index.to_i)
     end
 
     def current_situation
@@ -201,7 +258,7 @@ class StoryCreator
             puts "Moving from #{@current} -> #{id}"
             @current = id
             puts "Current situation:"
-            puts current_situation
+            show_situation args
         else
             puts "Situation '#{id}' does not exist"
         end
@@ -222,8 +279,9 @@ class StoryCreator
 
     def save args
         _, fname = args
-        puts "Saving to #{fname}"
-        File.open(fname, "w") do |f|
+        full_fname = File.join @story_dirname, fname
+        puts "Saving to #{full_fname}"
+        File.open(full_fname, "w") do |f|
             f.write(JSON.pretty_generate(to_hash))
         end
     end
@@ -281,6 +339,10 @@ class StoryCreator
     end
 
     def repl
+        puts "Welcome to Barter Story Creator!"
+        @story_dirname = prompt_str "Story directory name: "
+        FileUtils.mkdir_p(@story_dirname)
+
         if STDIN.tty?
             Readline.completion_append_character = ' '
             Readline.completion_proc = command_proc

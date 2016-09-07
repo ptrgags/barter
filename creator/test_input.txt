@@ -1,3 +1,4 @@
+foo
 edit_item banana
 Banana
 Have you taken Defense against Fresh Fruit?

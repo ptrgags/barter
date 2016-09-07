@@ -19,3 +19,20 @@ def prompt_edit_str prompt, old_val
         line.chomp
     end
 end
+
+# Prompt for y/n/yes/no
+# as a case-insensitive match and returns a bool
+# anything other than y/n/yes/no returns the default
+# value
+def prompt_approval prompt, default=false
+    print "#{prompt} [y/n]: "
+    answer = gets || ""
+    answer = answer.chomp.downcase
+    if ['y', 'yes'].include? answer
+        true
+    elsif ['n', 'no'].include? answer
+        false
+    else
+        default
+    end
+end
