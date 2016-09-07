@@ -156,16 +156,8 @@ class StoryCreator
             edit_situation args
         else
             puts "Add situation with ID #{id}"
-            @situations[id] = Situation.from_input id
-
-            
-            # TODO: This should be moved to Situation
             fname = File.join @story_dirname, "#{id}.txt"
-            puts "Creating file #{fname}"
-            File.open(fname, "w") do |f|
-                f.puts "# Write the description for situation #{id} here:"
-            end
-            
+            @situations[id] = Situation.from_input id, fname
             @options[id] = []
         end
     end
@@ -180,46 +172,45 @@ class StoryCreator
         end
     end
 
-    # TODO: Prompt to delete the text file
+    def delete_situation_options id
+        delete_opts = prompt_approval "Delete options for situation #{id}?"
+        if delete_opts
+            puts "Removing options for situation #{id}"
+            opts = @options.reject{|sit_id, items| sit_id == id}
+            opts = opts.map do |sit_id, items|
+                [sit_id, items.reject {|item| item.to_id == id}]
+            end
+            @options = Hash[opts]
+        end 
+    end
+
     def delete_situation args
         _, id = args
         if @situations.has_key? id
             puts "Delete situation with ID #{id}"
+            @situations[id].delete_desc_file
             @situations.delete(id)
-
-            # TODO: This should be moved to Situation
-            fname = File.join @story_dirname, "#{id}.txt"
-            delete_file = prompt_approval "Delete file #{fname}?"
-            if delete_file
-                begin
-                    FileUtils.rm_f(fname)
-                rescue Exception => e
-                    puts "Error deleting #{fname}: #{e.message}"
-                end
-            end
-
-            delete_opts = prompt_approval "Delete options for situation #{id}?"
-            if delete_opts
-                puts "Removing options for situation #{id}"
-                opts = @options.reject{|sit_id, items| sit_id == id}
-                opts = opts.map do |sit_id, items|
-                    [sit_id, items.reject {|item| item.to_id == id}]
-                end
-                @options = Hash[opts]
-            end
-                    
+            delete_situation_options id
         else
             puts "Sorry, situation #{id} does not exist!"
         end
     end
 
     def display_options
-        @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
+        if @current.empty?
+            puts "No Situation selected. Use `goto <situation_id>` first" 
+        else
+            @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
+        end
     end
 
     def show_situation args
-        puts current_situation
-        display_options
+        if @current.empty?
+            puts "No Situation selected. Use `goto <situation_id>` first" 
+        else
+            puts current_situation
+            display_options
+        end
     end
 
     def list_options args
@@ -229,8 +220,17 @@ class StoryCreator
 
     def add_option args
         _, to = args
-        puts "Add option from #{@current} -> #{to}:"
-        @options[@current].push(Option.from_input @current, to)
+        if @situations.has_key? to
+            puts "Add option from #{@current} -> #{to}:"
+            @options[@current].push(Option.from_input @current, to)
+        else 
+            puts "Situation #{to} doesn't yet exist"
+            create_sit = prompt_approval "Create situation #{to}?"
+            if create_sit
+                add_situation to
+                @options[@current].push(Option.from_input @current, to)
+            end
+        end
     end
 
     def edit_option args
@@ -257,11 +257,16 @@ class StoryCreator
         if @situations.has_key? id
             puts "Moving from #{@current} -> #{id}"
             @current = id
-            puts "Current situation:"
-            show_situation args
         else
-            puts "Situation '#{id}' does not exist"
+            puts "Situation '#{id}' does not yet exist"
+            create_sit = prompt_approval "Create Situation #{id}?"
+            if create_sit
+                add_situation args
+                @current = id
+            end
         end
+        puts "Current situation:"
+        show_situation args
     end
 
     def to_hash
