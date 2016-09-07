@@ -17,6 +17,11 @@ class Item
         }
     end
 
+    def edit
+        @name = prompt_edit_str "Item Name", @name
+        @desc = prompt_edit_str "Item Description", @desc
+    end
+
     def to_s
         "#{@id}: #{@name} - #{@desc}"
     end

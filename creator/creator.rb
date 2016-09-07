@@ -11,26 +11,36 @@ class StoryCreator
 
     # All commands
     COMMANDS = [
+        # General Commands
         "help",
+        "save",
+        "set_start",
+        "show_json",
+        "goto",
+        "quit",
+        "bye",
+
+        # Item Commands
         "list_items",
+        "add_item",
         "edit_item",
         "delete_item",
+
+        # Situation Commands
         "list_situations",
+        "add_situation",
         "edit_situation",
         "delete_situation",
         "show_situation",
+
+        # Option commands
         "list_options",
         "add_option",
         "edit_option",
-        "delete_option",
-        "save",
-        "set_start",
-        "goto",
-        "quit",
-        "exit"
+        "delete_option"
     ].sort
 
-    # Commands that tkae an item ID
+    # Commands that take an item ID
     ITEM_COMMANDS = [
         "edit_item",
         "delete_item"
@@ -63,22 +73,34 @@ class StoryCreator
 
     def help args
         puts "StoryCreator Commands:"
+
+        # General commmands
         puts "help - display this help"
+        puts "set_start <id> - set the start node"
+        puts "save <fname> - save the final JSON file"
+        puts "quit - exit the program, saving data"
+        puts "goto <id> - Set the current situation pointer to <id>"
+        puts "bye - same as quit"
+
+        # Item commands
         puts "list_items - list all items"
+        puts "add_item <id> - create a new item"
         puts "edit_item <id> - edit/create item"
         puts "delete_item <id> - delete item"
+
+        # Situation commands
         puts "list_situations - list all situations"
+        puts "add_situation <id> - create a new situation"
         puts "edit_situation <id> - create/edit a situation"
         puts "delete_situation <id> - delete a situation"
+        puts "show_situation <id> - show the *current* situation"
+
+        # Option commands
         puts "list_options - list all options for the current situation"
         puts "add_option <id> - add an option from the current situation -> <id>"
         puts "edit_option <index> - edit the option from the list in list_options"
         puts "delete_option <index> - Delete an option with the index "
-        puts "save <fname> - save the final JSON file"
-        puts "set_start <id> - set the start node"
-        puts "goto <id> - Set the current situation pointer to <id>"
-        puts "quit - exit the program, saving data"
-        puts "exit - same as quit"
+
     end
 
     def list_items args
@@ -86,16 +108,35 @@ class StoryCreator
         @items.each {|id, item| puts item}
     end
 
+    def add_item args
+        _, id = args
+        if @items.has_key? id
+            edit_item args
+        else
+            puts "Adding item with ID #{id}"
+            @items[id] = Item.from_input id
+        end
+    end
+
     def edit_item args
         _, id = args
-        puts "Edit item with ID #{id}"
-        @items[id] = Item.from_input id
+        if not @items.has_key? id
+            add_item args
+        else
+            puts "Edit existing item with ID #{id}"
+            @items[id].edit
+        end
     end
 
     def delete_item args
         _, id = args
-        puts "Delete item with ID #{id}"
-        @items.delete(id)
+        if @items.has_key? id
+            puts "Delete item with ID #{id}"
+            @items.delete(id)
+        else
+            puts "Whoops, there's no item #{id} here!"
+            puts "see 'list_items' to see available items"
+        end
     end
 
     def list_situations args
@@ -175,25 +216,26 @@ class StoryCreator
         }
     end
 
-    def show_json
+    def show_json args
         puts JSON.pretty_generate(to_hash)
     end
 
     def save args
         _, fname = args
-        puts "saving to #{fname}"
+        puts "Saving to #{fname}"
         File.open(fname, "w") do |f|
             f.write(JSON.pretty_generate(to_hash))
         end
     end
 
-    def bye
+    def bye args
         puts "Bye!"
         exit 0
     end
 
+    alias_method :quit, :bye
+
     def parse_command command
-        puts command
         args = command.split(' ')
         if COMMANDS.include? args[0]
             self.send(args[0], args)
