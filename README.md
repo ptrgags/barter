@@ -1,5 +1,7 @@
 # Barter (2014, 2016)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/242d9adf41f2423981182d0ac9bb8323)](https://www.codacy.com/app/ptrgags/barter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ptrgags/barter&amp;utm_campaign=Badge_Grade)
+
 Barter is a text-based game I started as an independent study project in my
 senior year of high school. Now in college, I am revisiting the idea, revising
 the code to use new features of JavaScript.
