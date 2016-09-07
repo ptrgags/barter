@@ -17,6 +17,7 @@ add_option intro
 Perform Magic
 list_options
 set_start intro
+show_situation
 show_json
 save foo.json
 quit

@@ -29,7 +29,7 @@ class Option
 
     def self.from_input from, to
         option = self.new from, to
-        option.desc = prompt_str "Label for Option button from #{from} -> #{to}"
+        option.desc = prompt_str "Label for Option button from #{from} -> #{to} "
         option
     end
 end

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'json'
+require 'readline'
 
 require_relative 'ui'
 require_relative 'Item'
@@ -7,6 +8,48 @@ require_relative 'Situation'
 require_relative 'Option'
 
 class StoryCreator
+
+    # All commands
+    COMMANDS = [
+        "help",
+        "list_items",
+        "edit_item",
+        "delete_item",
+        "list_situations",
+        "edit_situation",
+        "delete_situation",
+        "show_situation",
+        "list_options",
+        "add_option",
+        "edit_option",
+        "delete_option",
+        "save",
+        "set_start",
+        "goto",
+        "quit",
+        "exit"
+    ].sort
+
+    # Commands that tkae an item ID
+    ITEM_COMMANDS = [
+        "edit_item",
+        "delete_item"
+    ]
+
+    # Commands that take a situation ID
+    SITUATION_COMMANDS = [
+        "edit_situation",
+        "delete_situation",
+        "add_option",
+        "set_start",
+        "goto"
+    ]
+
+    # Commands that take an option index
+    OPTION_COMMANDS = [
+        "edit_option",
+        "delete_option"
+    ]
 
     def initialize
         @items = {}
@@ -18,7 +61,7 @@ class StoryCreator
         @start_situation = ""
     end
 
-    def help
+    def help args
         puts "StoryCreator Commands:"
         puts "help - display this help"
         puts "list_items - list all items"
@@ -38,7 +81,7 @@ class StoryCreator
         puts "exit - same as quit"
     end
 
-    def list_items
+    def list_items args
         puts "All Items:"
         @items.each {|id, item| puts item}
     end
@@ -55,7 +98,7 @@ class StoryCreator
         @items.delete(id)
     end
 
-    def list_situations
+    def list_situations args
         puts "All situations:"
         @situations.each {|id, situation| puts situation}
     end
@@ -76,7 +119,12 @@ class StoryCreator
         @situations.delete(id)
     end
 
-    def list_options
+    def show_situation args
+        puts current_situation
+        @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
+    end
+
+    def list_options args
         puts "All Options:"
         @options[@current].each_with_index {|opt, i| puts "#{i}) #{opt}"}
     end
@@ -144,48 +192,64 @@ class StoryCreator
         exit 0
     end
 
-    # TODO: Refactor this to use the readline library
     def parse_command command
+        puts command
         args = command.split(' ')
-        case args[0]
-        when "list_items"
-            list_items
-        when "edit_item"
-            edit_item args
-        when "delete_item"
-            delete_item args
-        when "list_situations"
-            list_situations
-        when "edit_situation"
-            edit_situation args
-        when "delete_situation"
-            delete_situation args
-        when "list_options"
-            list_options
-        when "add_option"
-            add_option args
-        when "delete_option"
-            delete_option args
-        when "set_start"
-            set_start args
-        when "goto"
-            goto args
-        when "save"
-            save args
-        when "help"
-            help
-        when "show_json"
-            show_json
-        when "quit", "exit"
-            bye
+        if COMMANDS.include? args[0]
+            self.send(args[0], args)
         else
             puts "Bad command! Try 'help' for valid commands"
         end
     end
 
+    def command_proc
+        return proc do |s|
+            # First, let's find the how many words we have
+            buf = Readline.line_buffer
+            words = buf.split(' ')
+            num_words = words.length
+
+            # If the last character was a space, go to the next word
+            if buf[-1] == ' '
+                num_words += 1
+            end
+
+            # We'll do a grep on the appropriate array looking
+            # for prefixes
+            pattern = /^#{Regexp.escape(s)}/
+
+            # Determine which list of commands to look through
+            if num_words < 2
+                COMMANDS.grep(pattern)
+            elsif num_words == 2
+                cmd, *_ = words
+                if ITEM_COMMANDS.include? cmd
+                    @items.keys.grep(pattern)
+                elsif SITUATION_COMMANDS.include? cmd
+                    @situations.keys.grep(pattern)
+                elsif OPTION_COMMANDS.include? cmd
+                    @options[current].each_with_index{|o, i| i.to_s}.grep(pattern)
+                else
+                    []
+                end
+            else
+                []
+            end
+        end
+    end
+
     def repl
-        loop do
-            parse_command(prompt_str "StoryCreator> ")
+        if STDIN.tty?
+            Readline.completion_append_character = ' '
+            Readline.completion_proc = command_proc
+            loop do
+                line = Readline.readline("StoryCreator> ", true)
+                parse_command(line.chomp)
+            end
+        else
+            loop do
+                parse_command(gets.chomp)
+            end
         end
     end
 end
