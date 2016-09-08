@@ -36,3 +36,74 @@ def prompt_approval prompt, default=false
         default
     end
 end
+
+# TODO: Allow removing items
+def prompt_items items, start_items=nil
+    puts "Enter items and quantities in the following format"
+    puts "<item_id> <quantity>"
+    puts "Enter 'help' for list of items"
+    puts "Enter a blank line when done"
+
+    item_stacks = Hash.new(0)
+    unless start_items.nil?
+        start_items.each{|id, quant| item_stacks[id] = quant}
+    end
+
+    loop do
+        puts "Current item list:"
+        item_stacks.each do |id, quant| 
+            if quant > 0
+                puts "#{id}: #{quant}"
+            end
+        end
+
+        line = prompt_str "--> " 
+        break if line.empty?
+
+        # Display help
+        if line == 'help'
+            puts "===================="
+            puts "item_id: name"
+            puts "--------------------"
+            items.each {|id, item| puts "#{id}: #{item.name}"}
+            puts "===================="
+            next
+        end
+
+        item_id, quantity = line.split " "
+        quantity = Integer(quantity) rescue nil
+        if quantity.nil?
+            puts "Quantity must be an integer. try again"
+        elsif not items.has_key? item_id
+            create_item = prompt_approval "Item #{item_id} doesn't exist. Create it?"
+            if create_item
+                puts "Creating item #{item_id}"
+                items[item_id] = Item.from_input item_id
+                item_stacks[item_id] = quantity
+            else
+                puts "Skipping..."
+            end
+        else
+            item_stacks[item_id] = quantity
+        end
+    end
+    item_stacks.reject{|id, quant| quant < 1}.to_a
+end
+
+def prompt_give_items items, start_items=nil
+    has_items = prompt_approval "Does the player need item(s) to select this option?"
+    if has_items
+        prompt_items items, start_items
+    else
+        []
+    end
+end
+
+def prompt_take_items items, start_items=nil
+    has_items = prompt_approval "Does the player get item(s) from this option?"
+    if has_items
+        prompt_items items, start_items
+    else
+        []
+    end
+end

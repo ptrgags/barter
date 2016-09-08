@@ -220,21 +220,44 @@ class StoryCreator
 
     def add_option args
         _, to = args
+
+        if @current.empty?
+            puts "No Situation selected. Use `goto <situation_id>` first" 
+            return
+        end
+
+        opt = nil
         if @situations.has_key? to
             puts "Add option from #{@current} -> #{to}:"
-            @options[@current].push(Option.from_input @current, to)
+            opt = Option.from_input @current, to
         else 
             puts "Situation #{to} doesn't yet exist"
             create_sit = prompt_approval "Create situation #{to}?"
             if create_sit
                 add_situation to
-                @options[@current].push(Option.from_input @current, to)
+                opt = Option.from_input @current, to
             end
+        end
+
+        unless opt.nil?
+            opt.give_items = prompt_give_items @items, []
+            opt.take_items = prompt_take_items @items, []
+            if opt.give_items.any? and opt.take_items.any?
+                opt.barter = prompt_approval "Label this option as a Barter?"
+            end
+            @options[@current].push(opt)
         end
     end
 
     def edit_option args
-        puts "TODO!"
+        _, index = args
+        opt = @options[@current][index.to_i]
+        opt.edit
+        opt.give_items = prompt_give_items @items, opt.give_items
+        opt.take_items = prompt_take_items @items, opt.take_items
+        if opt.give_items.any? and opt.take_items.any?
+            opt.barter = prompt_approval "Label this option as a Barter?"
+        end
     end
 
     def delete_option args
@@ -333,7 +356,7 @@ class StoryCreator
                 elsif SITUATION_COMMANDS.include? cmd
                     @situations.keys.grep(pattern)
                 elsif OPTION_COMMANDS.include? cmd
-                    @options[current].each_with_index{|o, i| i.to_s}.grep(pattern)
+                    @options[@current].each_with_index{|o, i| i.to_s}.grep(pattern)
                 else
                     []
                 end

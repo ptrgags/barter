@@ -1,6 +1,5 @@
 require_relative "ui"
 
-# TODO: Handle Description files
 class Situation
     attr_accessor :id, :title
 
@@ -45,7 +44,7 @@ class Situation
     def to_hash
         {
             "title" => @title,
-            "desc" => desc.join("")
+            "desc" => desc.join(" ")
         }
     end
 
