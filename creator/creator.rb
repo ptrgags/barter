@@ -15,9 +15,10 @@ class StoryCreator
     COMMANDS = [
         # General Commands
         "help",
-        "save",
-        "load",
+        "save_story",
+        "load_story",
         "set_start",
+        "set_start_items",
         "show_json",
         "show_graph",
         "goto",
@@ -76,8 +77,14 @@ class StoryCreator
         # Start situation for this story
         @start_situation = ""
 
+        # Starting inventory for this story
+        @start_items = []
+
         # Path to directory where story will be stored
         @story_dirname = ""
+
+        # Identifier for naming graph files and save files 
+        @story_id = ""
     end
 
     def help _
@@ -86,6 +93,7 @@ class StoryCreator
         # General commmands
         puts "help - display this help"
         puts "set_start <id> - set the start node"
+        puts "set_start_items - set the starting inventory"
         puts "save <fname> - save the final JSON file into the story directory"
         puts "quit - exit the program, saving data"
         puts "goto <id> - Set the current situation pointer to <id>"
@@ -280,6 +288,10 @@ class StoryCreator
         @start_situation = id
     end
 
+    def set_start_items _
+        @start_items = prompt_start_items @items, @start_items
+    end
+
     def goto args
         _, id = args
         if @situations.has_key? id
@@ -303,6 +315,7 @@ class StoryCreator
             "situations" => Hash[@situations.map{|id, sit| [id, sit.to_hash]}],
             "options" => @options.values.flatten.map {|opt| opt.to_hash},
             "start" => @start_situation,
+            "start_items" => @start_items
         }
     end
 
@@ -332,13 +345,12 @@ class StoryCreator
             end
         end
 
-        # TODO: set an ID for the story
-        fname = File.join(@story_dirname, "foo.#{format}")
+        fname = File.join(@story_dirname, "#{@story_id}.#{format}")
         g.output format.to_sym => fname
         puts "Created image of story graph in #{fname}"
     end
 
-    def save args
+    def save_story args
         _, fname = args
         full_fname = File.join @story_dirname, fname
         puts "Saving to #{full_fname}"
@@ -368,7 +380,7 @@ class StoryCreator
         end
     end
 
-    def load args
+    def load_story args
         _, fname = args
         full_fname = File.join @story_dirname, fname
         json = File.read(full_fname)
@@ -377,9 +389,26 @@ class StoryCreator
         load_situations data['situations']
         load_options data['options']
         @start_situation = data['start']
+        @start_items = data['start_items']
+    end
+
+    def auto_save
+        save_file = ".#{@story_id}-save.json"
+        if prompt_approval "Save story to #{save_file}?"
+            save_story [nil, save_file]
+        end
+    end
+
+    def auto_load
+        save_file = ".#{@story_id}-save.json"
+        is_file = File.file?(File.join @story_dirname, save_file)
+        if is_file and prompt_approval "Load story from #{save_file}?"
+            load_story [nil, save_file]
+        end
     end
 
     def bye _
+        auto_save
         puts "Bye!"
         exit 0
     end
@@ -438,6 +467,9 @@ class StoryCreator
         puts "Welcome to Barter Story Creator!"
         @story_dirname = prompt_str "Story directory name: "
         FileUtils.mkdir_p(@story_dirname)
+        @story_id = File.basename @story_dirname
+        @story_id = prompt_edit_str "Story ID for naming files?", @story_id
+        auto_load
 
         if STDIN.tty?
             Readline.completion_append_character = ' '

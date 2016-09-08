@@ -37,10 +37,10 @@ def prompt_approval prompt, default=false
     end
 end
 
-# TODO: Allow removing items
 def prompt_items items, start_items=nil
     puts "Enter items and quantities in the following format"
     puts "<item_id> <quantity>"
+    puts "if quantity is 0, the item will be removed"
     puts "Enter 'help' for list of items"
     puts "Enter a blank line when done"
 
@@ -90,9 +90,10 @@ def prompt_items items, start_items=nil
     item_stacks.reject{|id, quant| quant < 1}.to_a
 end
 
+
+# TODO: Ew ew refactor this!
 def prompt_give_items items, start_items=nil
-    has_items = prompt_approval "Does the player need item(s) to select this option?"
-    if has_items
+    if prompt_approval "Does the player need item(s) to select this option?"
         prompt_items items, start_items
     else
         []
@@ -100,8 +101,15 @@ def prompt_give_items items, start_items=nil
 end
 
 def prompt_take_items items, start_items=nil
-    has_items = prompt_approval "Does the player get item(s) from this option?"
-    if has_items
+    if prompt_approval "Does the player get item(s) from this option?"
+        prompt_items items, start_items
+    else
+        []
+    end
+end
+
+def prompt_start_items items, start_items=nil
+    if prompt_approval "Does the player start with any item(s)?"
         prompt_items items, start_items
     else
         []
