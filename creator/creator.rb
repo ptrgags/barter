@@ -2,6 +2,7 @@
 require 'json'
 require 'readline'
 require 'fileutils'
+require 'graphviz'
 
 require_relative 'ui'
 require_relative 'Item'
@@ -17,6 +18,7 @@ class StoryCreator
         "save",
         "set_start",
         "show_json",
+        "show_graph",
         "goto",
         "quit",
         "bye",
@@ -77,7 +79,7 @@ class StoryCreator
         @story_dirname = ""
     end
 
-    def help args
+    def help _
         puts "StoryCreator Commands:"
 
         # General commmands
@@ -109,9 +111,9 @@ class StoryCreator
 
     end
 
-    def list_items args
+    def list_items _
         puts "All Items:"
-        @items.each {|id, item| puts item}
+        @items.each {|_, item| puts item}
     end
 
     def add_item args
@@ -145,9 +147,9 @@ class StoryCreator
         end
     end
 
-    def list_situations args
+    def list_situations _
         puts "All situations:"
-        @situations.each {|id, situation| puts situation}
+        @situations.each {|_, situation| puts situation}
     end
 
     def add_situation args
@@ -176,7 +178,7 @@ class StoryCreator
         delete_opts = prompt_approval "Delete options for situation #{id}?"
         if delete_opts
             puts "Removing options for situation #{id}"
-            opts = @options.reject{|sit_id, items| sit_id == id}
+            opts = @options.reject{|sit_id, _| sit_id == id}
             opts = opts.map do |sit_id, items|
                 [sit_id, items.reject {|item| item.to_id == id}]
             end
@@ -204,7 +206,7 @@ class StoryCreator
         end
     end
 
-    def show_situation args
+    def show_situation _
         if @current.empty?
             puts "No Situation selected. Use `goto <situation_id>` first" 
         else
@@ -213,11 +215,13 @@ class StoryCreator
         end
     end
 
-    def list_options args
+    def list_options _
         puts "All Options:"
         display_options
     end
 
+    
+    # The cyclomatic complexity is too damn high!
     def add_option args
         _, to = args
 
@@ -234,7 +238,7 @@ class StoryCreator
             puts "Situation #{to} doesn't yet exist"
             create_sit = prompt_approval "Create situation #{to}?"
             if create_sit
-                add_situation to
+                add_situation args
                 opt = Option.from_input @current, to
             end
         end
@@ -301,8 +305,36 @@ class StoryCreator
         }
     end
 
-    def show_json args
+    def show_json _
         puts JSON.pretty_generate(to_hash)
+    end
+
+    def show_graph args
+        _, format = args
+        unless ["png", "svg"].include? format
+            puts "Image format must be 'png' or 'svg'"
+            return
+        end
+
+        g = GraphViz.new :G, type: :digraph
+        graph_nodes = Hash[@situations.map{|id, _| [id, g.add_nodes(id)]}]
+        @options.values.flatten.map do |opt|
+            g.add_edges(
+                graph_nodes[opt.from_id], 
+                graph_nodes[opt.to_id],
+                "label" => opt.desc)
+            if opt.back
+                g.add_edges(
+                    graph_nodes[opt.to_id],
+                    graph_nodes[opt.from_id],
+                    "label" => "Back") 
+            end
+        end
+
+        fname = File.join(@story_dirname, "foo.#{format}")
+        g.output format.to_sym => fname
+        puts "Created image of story graph in #{fname}"
+
     end
 
     def save args
@@ -314,12 +346,12 @@ class StoryCreator
         end
     end
 
-    def bye args
+    def bye _
         puts "Bye!"
         exit 0
     end
 
-    alias_method :quit, :bye
+    alias quit bye
 
     def parse_command command
         args = command.split(' ')
@@ -330,6 +362,7 @@ class StoryCreator
         end
     end
 
+    # TODO: The cyclomatic complexity is too damn high!
     def command_proc
         return proc do |s|
             # First, let's find the how many words we have
@@ -356,7 +389,9 @@ class StoryCreator
                 elsif SITUATION_COMMANDS.include? cmd
                     @situations.keys.grep(pattern)
                 elsif OPTION_COMMANDS.include? cmd
-                    @options[@current].each_with_index{|o, i| i.to_s}.grep(pattern)
+                    @options[@current]
+                        .each_with_index{|_, i| i.to_s}
+                        .grep(pattern)
                 else
                     []
                 end
