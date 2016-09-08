@@ -67,7 +67,7 @@ class Situation
             File.readlines(@desc_fname)
                 .reject{|line| line =~ /^#/ }
                 .map{|line| line.chomp}
-        rescue Exception => e
+        rescue StandardError => e
             puts "Error reading #{@desc_fname}: #{e.message}"
             "[No description]"
         end
@@ -75,8 +75,8 @@ class Situation
 
     # Create a Situation from an ID and hash
     # This data is from the JSON
-    def self.from_hash id, data
-        situation = self.new id
+    def self.from_hash id, data, fname
+        situation = self.new id, fname
         situation.title = data['title']
         situation
     end

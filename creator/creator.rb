@@ -16,6 +16,7 @@ class StoryCreator
         # General Commands
         "help",
         "save",
+        "load",
         "set_start",
         "show_json",
         "show_graph",
@@ -322,7 +323,7 @@ class StoryCreator
             g.add_edges(
                 graph_nodes[opt.from_id], 
                 graph_nodes[opt.to_id],
-                "label" => opt.desc)
+                "label" => opt.label)
             if opt.back
                 g.add_edges(
                     graph_nodes[opt.to_id],
@@ -331,10 +332,10 @@ class StoryCreator
             end
         end
 
+        # TODO: set an ID for the story
         fname = File.join(@story_dirname, "foo.#{format}")
         g.output format.to_sym => fname
         puts "Created image of story graph in #{fname}"
-
     end
 
     def save args
@@ -344,6 +345,38 @@ class StoryCreator
         File.open(full_fname, "w") do |f|
             f.write(JSON.pretty_generate(to_hash))
         end
+    end
+
+    def load_items items
+        items.each do |id, item_data|
+            @items[id] = Item.from_hash id, item_data
+        end
+    end
+
+    def load_situations situations
+        situations.each do |id, sit_data|
+            fname = File.join @story_dirname, "#{id}.txt"
+            @situations[id] = Situation.from_hash id, sit_data, fname
+            @options[id] = []
+        end
+    end
+
+    def load_options options
+        options.each do |opt_data|
+            opt = Option.from_hash opt_data
+            @options[opt.from_id].push(opt)
+        end
+    end
+
+    def load args
+        _, fname = args
+        full_fname = File.join @story_dirname, fname
+        json = File.read(full_fname)
+        data = JSON.parse(json)
+        load_items data['items']
+        load_situations data['situations']
+        load_options data['options']
+        @start_situation = data['start']
     end
 
     def bye _

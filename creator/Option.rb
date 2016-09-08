@@ -71,6 +71,10 @@ class Option
         output
     end
 
+    def label
+        @barter ? "Barter..." : @desc
+    end
+
     def edit
         @desc = prompt_edit_str "Option Button Label:", @desc
         @back = prompt_approval "Add a back link #{@to_id} -> #{@from_id}?"
@@ -79,7 +83,12 @@ class Option
 
     def self.from_hash data
         option = self.new data['from'], data['to']
-        option.desc = data['desc']
+        option.desc = data['desc'] || ""
+        option.back = data['back'] || false
+        option.barter = data['barter'] || false
+        option.one_time = data['one_time'] || false
+        option.give_items = data['give_items'] || []
+        option.take_items = data['take_items'] || []
         option
     end
 
