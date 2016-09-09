@@ -98,7 +98,7 @@ class Option
 
     def self.from_input from, to
         option = self.new from, to
-        option.desc = prompt_str "Label for Option button from #{from} -> #{to} "
+        option.desc = prompt_str "Label for Option button from #{from} -> #{to}: "
         option.back = prompt_approval "Add a back link #{to} -> #{from}?"
         option.one_time = prompt_approval "Is this a one-time option?"
         option

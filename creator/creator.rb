@@ -408,9 +408,15 @@ class StoryCreator
     end
 
     def bye _
-        auto_save
-        puts "Bye!"
-        exit 0
+        begin
+            puts "Shutting down..."
+            auto_save
+            puts "Bye!"
+            exit 0
+        rescue Interrupt
+            puts "\nNot cool bro >:("
+            retry
+        end
     end
 
     alias quit bye
@@ -487,5 +493,10 @@ class StoryCreator
 end
 
 
-creator = StoryCreator.new
-creator.repl
+begin
+    creator = StoryCreator.new
+    creator.repl
+rescue Interrupt
+    puts "\n"
+    creator.bye nil
+end
