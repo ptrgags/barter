@@ -60,6 +60,10 @@ class Option
             data["barter"] = true
         end
 
+        if back
+            data["back"] = true
+        end
+
         data
     end
 
