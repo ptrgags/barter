@@ -11,6 +11,21 @@ Unfortunately, graphs are difficult to visualize in text format. However,
 the program will be able to export a GraphViz-generated image of the
 story graph to a PNG or SVG file.
 
+## Installation:
+
+Barter Story Creator requires the following dependencies:
+
+* Ruby > 1.9.3 (Ruby 2 recommended)
+* GraphViz
+
+Once those are installed, install the Ruby gems:
+
+```
+bundle install
+```
+
+Then you can simply run `./creator.rb` to run the program.
+
 ## Startup:
 
 At startup, Barter Story Creator prompts the user for a story directory.
