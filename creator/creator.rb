@@ -88,7 +88,7 @@ class StoryCreator
     end
 
     def help _
-        puts "StoryCreator Commands:"
+        puts "Barter Story Creator Commands:"
 
         # General commmands
         puts "help - display this help"
@@ -265,6 +265,7 @@ class StoryCreator
     def edit_option args
         _, index = args
         opt = @options[@current][index.to_i]
+        puts "Editing option ##{index}:"
         opt.edit
         opt.give_items = prompt_give_items @items, opt.give_items
         opt.take_items = prompt_take_items @items, opt.take_items
@@ -285,10 +286,12 @@ class StoryCreator
 
     def set_start args
         _, id = args
+        puts "Setting start situation to #{id}"
         @start_situation = id
     end
 
     def set_start_items _
+        puts "Setting the player's starting inventory"
         @start_items = prompt_start_items @items, @start_items
     end
 
@@ -383,6 +386,7 @@ class StoryCreator
     def load_story args
         _, fname = args
         full_fname = File.join @story_dirname, fname
+        puts "Loading story from #{full_fname}"
         json = File.read(full_fname)
         data = JSON.parse(json)
         load_items data['items']

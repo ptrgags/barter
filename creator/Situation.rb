@@ -14,6 +14,7 @@ class Situation
 
     def create_desc_file
         if File.exist? @desc_fname
+            puts "Using existing file #{@desc_fname}"
             return
         end
         
