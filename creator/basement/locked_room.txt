@@ -1,0 +1,4 @@
+You open the locked door with the key. It's a mostly empty room, except for
+a vintage gramophone that is playing the music you heard earlier. 
+
+<p>However, something doesn't seem right about the gramophone...</p>

@@ -1,0 +1,9 @@
+<p>You insert a dollar into the vending machine. It spits out a soda.</p>
+
+<p>As you drink the soda, you notice something printed on the inside of the
+cap. It says:</p>
+
+<pre>
+SECRET CODE
+23244
+</pre>
