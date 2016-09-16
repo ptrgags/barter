@@ -1,0 +1,343 @@
+{
+  "items": {
+    "flashlight": {
+      "name": "Flashlight",
+      "desc": "It's bright."
+    },
+    "quarter": {
+      "name": "Quarter",
+      "desc": "$0.25"
+    },
+    "mop": {
+      "name": "Mop",
+      "desc": "For cleaning emergencies"
+    },
+    "chair_leg": {
+      "name": "Chair Leg",
+      "desc": "It's a broken chair leg"
+    },
+    "key": {
+      "name": "Key",
+      "desc": "A door key"
+    },
+    "code": {
+      "name": "Code",
+      "desc": "SECRET CODE: 15335"
+    }
+  },
+  "situations": {
+    "intro": {
+      "title": "Introduction",
+      "desc": "<h2>Hotel Basment</h2>  <h3>By: Genna Hennessy and Peter Gagliardi</h3>  <p>It was a dark and stormy night. You approach the basement of a hotel. Why, you can't say.</p>  <p>When suddenly...</p>"
+    },
+    "basement_door": {
+      "title": "Basement Door",
+      "desc": "<p>You hear festive music coming from the hotel basement. It seems odd to you, for this hotel is abandoned.</p>  <p>You also wonder why you are in an abandoned hotel anyway. And why is it  always a dark and stormy night?</p>  </p>You stop breaking the fourth wall and decide to open the door.</p>"
+    },
+    "basement": {
+      "title": "<i>The</i> Basement",
+      "desc": "</p>You enter the basement. It's so dark. Good thing you brought  a flashlight!</p>  <p>Do you turn on your flashlight? Or are you feeling brave today?</p>"
+    },
+    "ouch": {
+      "title": "Ouch!",
+      "desc": "<p>You hit your head on a low-hanging pipe walking down the stairs in the dark. You begin to regret your life's decisions.</p>  <p>You decide to turn on the flashlight to save yourself another headache</p>"
+    },
+    "basement_lights": {
+      "title": "The Basement (Now with light!)",
+      "desc": "<p>You find yourself in the basement of the hotel. There is festive music coming from a different room</p>  </p>There are many wooden chairs in one corner, probably set aside  for special events. One chair lies broken a few feet from the other chairs.</p>  <p>Near to the corner of the room with the stairs, there is a loose floorboard</p>  <p>In the corner diagonally across from the chairs, there is a cart of cleaning supplies</p>  <p>In the last corner, there are various pipes along the wall.</p>  <p>There is a door in the wall between the chairs and the pipes</p>"
+    },
+    "cleaning_supplies": {
+      "title": "Cleaning Supplies",
+      "desc": "There's a bunch of cleaning supplies... Including a mop! You think it may come in handy, so you take it with you."
+    },
+    "floorboard": {
+      "title": "Loose Floorboard",
+      "desc": "under the loose floorboard, you find a quarter and a lot of dust."
+    },
+    "sit": {
+      "title": "Sit Down",
+      "desc": "<p>You sit down in one of the chairs.</p>  <p>...This was pointless.</p>"
+    },
+    "broken_chair": {
+      "title": "Broken Chair",
+      "desc": "The chair has a broken leg. You figure the broken leg might be useful to  defend yourself, so you take it."
+    },
+    "pipes": {
+      "title": "Pipes",
+      "desc": "You inspect the pipes. There's nothing interesting to see here. "
+    },
+    "big_room": {
+      "title": "Big Room",
+      "desc": "<p>You are in a big room with many doors. The music is getting louder.</p>  <p>On the left wall, there are two doors. The closer one just has a doorknob, the other one has a keyhole</p>  <p>On the far wall, there is a single door marked \"Laundry\"</p>   <p>On the the right wall, there are again two doors. The closer one has a numeric keypad. The farther one is unmarked</p>  <p>Other than this, the room is empty.</p>"
+    },
+    "security_room": {
+      "title": "Security Room",
+      "desc": "<p>You unlock the door. It looks like a security room; there are many monitors with video footage.</p>  <p>You notice that the video on every screen is paused to look at a single person. You.</p>"
+    },
+    "fan_room": {
+      "title": "Fan Room",
+      "desc": "You are in a room. A huge exhaust fan is in the far wall. You hear something banging against the metal. There's a key in the bottom of the fan's casing,  but the fan is too fast to safely grab it."
+    },
+    "other_room": {
+      "title": "Room",
+      "desc": "It's a nondescript room. It's almost as if the author forgot to finis--"
+    },
+    "locked_room": {
+      "title": "(Previously) Locked Room",
+      "desc": "You open the locked door with the key. It's a mostly empty room, except for a vintage gramophone that is playing the music you heard earlier.   <p>However, something doesn't seem right about the gramophone...</p>"
+    },
+    "gramophone": {
+      "title": "Gramophone",
+      "desc": "<p>You look closer at the gramophone. The festive music is playing... but  there's no record being played!</p>  <p>You try to turn off the gramophone... but it won't stop.</p>  <p>You ponder what might be the real source of the sound, when suddenly...</p>"
+    },
+    "continued": {
+      "title": "To be Continued...",
+      "desc": "<p>Suddenly, you are surrounded in darkness. Someone threw a burlap sack over you and is now carrying you away...<p>  <code>TO BE CONTINUED...</code>"
+    },
+    "laundry_room": {
+      "title": "Laundry Room",
+      "desc": "You enter the laundry room. There is a soda machine in the corner. There are washers and driers everywhere. There is another unmarked door in the corner."
+    },
+    "fan": {
+      "title": "Fan",
+      "desc": "You jam the chair leg into the fan. It stops the fan in place long enough that you can grab the key without having your hand sliced open."
+    },
+    "washing_machine": {
+      "title": "Washing Machines",
+      "desc": "You go through each washer and drier. You find a few quarters. You are now $0.75 richer!"
+    },
+    "soda_machine": {
+      "title": "Soda Machine",
+      "desc": "<p>You insert a dollar into the vending machine. It spits out a soda.</p>  <p>As you drink the soda, you notice something printed on the inside of the cap. It says:</p>  <code> SECRET CODE: 15335 </code>"
+    }
+  },
+  "options": [
+    {
+      "from": "intro",
+      "to": "basement_door",
+      "desc": "Continue",
+      "one_time": true
+    },
+    {
+      "from": "basement_door",
+      "to": "basement",
+      "desc": "Open Door",
+      "one_time": true
+    },
+    {
+      "from": "basement",
+      "to": "ouch",
+      "desc": "Don't Turn on Flashlight",
+      "one_time": true
+    },
+    {
+      "from": "basement",
+      "to": "basement_lights",
+      "desc": "Turn On Flashlight",
+      "one_time": true,
+      "give_items": [
+        [
+          "flashlight",
+          1
+        ]
+      ]
+    },
+    {
+      "from": "ouch",
+      "to": "basement_lights",
+      "desc": "Turn On Flashlight",
+      "one_time": true,
+      "give_items": [
+        [
+          "flashlight",
+          1
+        ]
+      ]
+    },
+    {
+      "from": "basement_lights",
+      "to": "floorboard",
+      "desc": "Inspect Floorboard",
+      "one_time": true,
+      "take_items": [
+        [
+          "quarter",
+          1
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "basement_lights",
+      "to": "cleaning_supplies",
+      "desc": "Inspect Cleaning Supplies",
+      "one_time": true,
+      "take_items": [
+        [
+          "mop",
+          1
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "basement_lights",
+      "to": "pipes",
+      "desc": "Inspect Pipes",
+      "one_time": true,
+      "back": true
+    },
+    {
+      "from": "basement_lights",
+      "to": "sit",
+      "desc": "Sit Down",
+      "one_time": true,
+      "back": true
+    },
+    {
+      "from": "basement_lights",
+      "to": "broken_chair",
+      "desc": "Inspect Broken Chair",
+      "one_time": true,
+      "take_items": [
+        [
+          "chair_leg",
+          1
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "basement_lights",
+      "to": "big_room",
+      "desc": "Open Door",
+      "back": true
+    },
+    {
+      "from": "big_room",
+      "to": "fan_room",
+      "desc": "Left Wall, Closer Door",
+      "back": true
+    },
+    {
+      "from": "big_room",
+      "to": "locked_room",
+      "desc": "Locked Door",
+      "give_items": [
+        [
+          "key",
+          1
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "big_room",
+      "to": "laundry_room",
+      "desc": "Laundry Room Door",
+      "back": true
+    },
+    {
+      "from": "big_room",
+      "to": "other_room",
+      "desc": "Right Wall, Far Door"
+    },
+    {
+      "from": "big_room",
+      "to": "security_room",
+      "desc": "Locked Door (Keypad)",
+      "give_items": [
+        [
+          "code",
+          1
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "fan_room",
+      "to": "fan",
+      "desc": "Use Chair Leg",
+      "one_time": true,
+      "give_items": [
+        [
+          "chair_leg",
+          1
+        ]
+      ],
+      "take_items": [
+        [
+          "key",
+          1
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "other_room",
+      "to": "big_room",
+      "desc": "Door to Big Room"
+    },
+    {
+      "from": "other_room",
+      "to": "laundry_room",
+      "desc": "Door to Laundry Room"
+    },
+    {
+      "from": "locked_room",
+      "to": "gramophone",
+      "desc": "Inspect Gramophone",
+      "one_time": true
+    },
+    {
+      "from": "gramophone",
+      "to": "continued",
+      "desc": "Continue...",
+      "one_time": true
+    },
+    {
+      "from": "laundry_room",
+      "to": "washing_machine",
+      "desc": "Inspect Washers/Driers",
+      "one_time": true,
+      "take_items": [
+        [
+          "quarter",
+          3
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "laundry_room",
+      "to": "soda_machine",
+      "desc": "Buy a Soda",
+      "one_time": true,
+      "give_items": [
+        [
+          "quarter",
+          4
+        ]
+      ],
+      "take_items": [
+        [
+          "code",
+          1
+        ]
+      ],
+      "back": true
+    },
+    {
+      "from": "laundry_room",
+      "to": "other_room",
+      "desc": "Other Door"
+    }
+  ],
+  "start": "intro",
+  "start_items": [
+    [
+      "flashlight",
+      1
+    ]
+  ]
+}

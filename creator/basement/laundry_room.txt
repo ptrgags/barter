@@ -1,2 +1,3 @@
-<p>You enter the laundry room. There is a soda machine in the corner. There
-are washers and driers everywhere.</p>
+You enter the laundry room. There is a soda machine in the corner. There
+are washers and driers everywhere. There is another unmarked door in the
+corner.
