@@ -97,15 +97,15 @@ class Option {
      */
     get label() {
         //List the items with commas in between
-        var give_items = this.give_items.join(', ');
-        var take_items = this.take_items.join(', ');
+        var give_items = this.give_items.join(',<br/>');
+        var take_items = this.take_items.join(',<br/>');
 
         //Barter options list the items that are given/received
         if (this.barter)
-            return `Barter ${give_items} for ${take_items}`;
+            return `Barter ${give_items} <br/> for ${take_items}`;
         //Options that require only giving items show what's needed
         else if (give_items)
-            return `${this.desc} (Requires ${give_items})`;
+            return `${this.desc} <br/> (Requires ${give_items})`;
         //Otherwise, just display the description.
         else
             return this.desc;
