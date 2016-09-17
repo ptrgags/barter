@@ -1,0 +1,6 @@
+<p>You look closer at the gramophone. The festive music is playing... but 
+there's no record being played!</p>
+
+<p>You try to turn off the gramophone... but it won't stop.</p>
+
+<p>You ponder what might be the real source of the sound, when suddenly...</p>

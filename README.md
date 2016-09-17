@@ -67,10 +67,11 @@ IDs for `Item`s and `Situation`s.
 An `Item` is an object in the game. Each item is represented in JSON with an
 object with the following keys:
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `name` | `String` | Short name of the item |
-| `desc` | `String` | (slightly) longer description of the item. |
+| Key        | Type      | Description |
+|------------|-----------|-------------|
+| `name`     | `String`  | Short name of the item |
+| `desc`     | `String`  | (slightly) longer description of the item. |
+| `key_item` | `Boolean` | Key items are not removed from inventory after usage |
 
 **ItemStack**:
 

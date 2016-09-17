@@ -11,6 +11,7 @@ class Item {
         this.id = id;
         this.name = data.name;
         this.desc = data.desc;
+        this.key_item = data.key_item || false;
     }
 
     toString() {
@@ -45,6 +46,7 @@ class ItemStack {
     get id() { return this.item.id; }
     get name() { return this.item.name; }
     get desc() { return this.item.desc; }
+    get key_item() { return this.item.key_item; }
 
     toString() {
         return `<b>${this.name} (${this.quantity})</b>`;
@@ -83,9 +85,11 @@ class Inventory {
         for (var stack_id in this.stacks) {
             if ({}.hasOwnProperty.call(this.stacks, stack_id)) {
                 var stack = this.stacks[stack_id];
+                var is_key_item = (stack.key_item) ? 'Yes' : 'No';
                 output += `<tr><td>${stack.name}</td>`
                     + `<td>${stack.desc}</td>`
-                    + `<td>${stack.quantity}</td></tr>`;
+                    + `<td>${stack.quantity}</td>`
+                    + `<td>${is_key_item}</td></tr>`;
             }
         }
         return output;
@@ -136,6 +140,10 @@ class Inventory {
     //Remove a single item stack's worth of items from the inventory.
     //On error, this throws an Error object
     remove_item_stack(stack) {
+        //Don't remove key items
+        if (stack.key_item)
+            return;
+
         var inv_stack = this.stacks[stack.id];
         //Make sure the stack exists
         if(!this.has_item_stack(stack))
