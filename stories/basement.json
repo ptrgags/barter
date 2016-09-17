@@ -29,7 +29,7 @@
   "situations": {
     "intro": {
       "title": "Introduction",
-      "desc": "<h2>Hotel Basment</h2>  <h3>By: Genna Hennessy and Peter Gagliardi</h3>  <p>It was a dark and stormy night. You approach the basement of a hotel. Why, you can't say.</p>  <p>When suddenly...</p>"
+      "desc": "<p>It was a dark and stormy night. You approach the basement of a hotel. Why, you can't say.</p>  <p>When suddenly...</p>"
     },
     "basement_door": {
       "title": "Basement Door",
