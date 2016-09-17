@@ -18,11 +18,13 @@
     },
     "key": {
       "name": "Key",
-      "desc": "A door key"
+      "desc": "A door key",
+      "key_item": true
     },
     "code": {
       "name": "Code",
-      "desc": "SECRET CODE: 15335"
+      "desc": "SECRET CODE: 15335",
+      "key_item": true
     }
   },
   "situations": {

@@ -28,7 +28,7 @@ var setup = (story_data) => {
  */
 $(document).ready(() => {
     //1. Get the story file
-    get_story('tutorial')
+    get_story('basement')
         .then(setup)
         .catch(console.err);
 });
