@@ -58,7 +58,7 @@ var init_story = (story) => {
     get_story(story.file)
         .then(start_story)
         .catch(console.err);
-}
+};
 
 /**
  * Start a single story

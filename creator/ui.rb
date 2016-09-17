@@ -87,7 +87,7 @@ def prompt_items items, start_items=nil
             item_stacks[item_id] = quantity
         end
     end
-    item_stacks.reject{|id, quant| quant < 1}.to_a
+    item_stacks.reject{|_, quant| quant < 1}.to_a
 end
 
 

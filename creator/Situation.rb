@@ -25,7 +25,7 @@ class Situation
                 f.puts "# Comments start with '#'"
                 f.puts "# You can use HTML tags in this file"
             end
-        rescue Exception => e
+        rescue StandardError => e
             puts "Could not open #{@desc_fname}: #{e.message}"
         end
     end
