@@ -40,27 +40,27 @@ class Option
         }
 
         # Only set the following keys if needed
-        unless barter
+        unless @barter
             data["desc"] = @desc
         end
 
-        if one_time
+        if @one_time
             data["one_time"] = true
         end
 
-        if give_items.any?
+        if @give_items.any?
             data["give_items"] = @give_items
         end
 
-        if take_items.any?
+        if @take_items.any?
             data["take_items"] = @take_items
         end
 
-        if barter
+        if @barter
             data["barter"] = true
         end
 
-        if back
+        if @back
             data["back"] = true
         end
 

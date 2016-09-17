@@ -18,7 +18,8 @@
     },
     "key": {
       "name": "Key",
-      "desc": "A door key"
+      "desc": "A door key",
+      "key_item": true
     },
     "code": {
       "name": "Code",
