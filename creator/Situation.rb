@@ -35,7 +35,7 @@ class Situation
         if delete_file
             begin
                 FileUtils.rm_f(@desc_fname)
-            rescue Exception => e
+            rescue StandardError => e
                 puts "Error deleting #{@desc_fname}: #{e.message}"
             end
         end

@@ -229,8 +229,17 @@ class StoryCreator
         display_options
     end
 
+    def set_option_items opt
+        unless opt.nil?
+            opt.give_items = prompt_give_items @items, []
+            opt.take_items = prompt_take_items @items, []
+            if opt.give_items.any? and opt.take_items.any?
+                opt.barter = prompt_approval "Label this option as a Barter?"
+            end
+            @options[@current].push(opt)
+        end
+    end
     
-    # The cyclomatic complexity is too damn high!
     def add_option args
         _, to = args
 
@@ -251,15 +260,7 @@ class StoryCreator
                 opt = Option.from_input @current, to
             end
         end
-
-        unless opt.nil?
-            opt.give_items = prompt_give_items @items, []
-            opt.take_items = prompt_take_items @items, []
-            if opt.give_items.any? and opt.take_items.any?
-                opt.barter = prompt_approval "Label this option as a Barter?"
-            end
-            @options[@current].push(opt)
-        end
+        set_option_items opt
     end
 
     def edit_option args
@@ -434,7 +435,21 @@ class StoryCreator
         end
     end
 
-    # TODO: The cyclomatic complexity is too damn high!
+    def autocomplete words, pattern
+        cmd, *_ = words
+        if ITEM_COMMANDS.include? cmd
+            @items.keys.grep(pattern)
+        elsif SITUATION_COMMANDS.include? cmd
+            @situations.keys.grep(pattern)
+        elsif OPTION_COMMANDS.include? cmd
+            @options[@current]
+                .each_with_index{|_, i| i.to_s}
+                .grep(pattern)
+        else
+            []
+        end
+    end
+
     def command_proc
         return proc do |s|
             # First, let's find the how many words we have
@@ -455,18 +470,7 @@ class StoryCreator
             if num_words < 2
                 COMMANDS.grep(pattern)
             elsif num_words == 2
-                cmd, *_ = words
-                if ITEM_COMMANDS.include? cmd
-                    @items.keys.grep(pattern)
-                elsif SITUATION_COMMANDS.include? cmd
-                    @situations.keys.grep(pattern)
-                elsif OPTION_COMMANDS.include? cmd
-                    @options[@current]
-                        .each_with_index{|_, i| i.to_s}
-                        .grep(pattern)
-                else
-                    []
-                end
+                autocomplete words, pattern
             else
                 []
             end

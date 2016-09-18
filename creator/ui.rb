@@ -37,6 +37,48 @@ def prompt_approval prompt, default=false
     end
 end
 
+def init_item_stacks start_items
+    item_stacks = Hash.new(0)
+    unless start_items.nil?
+        start_items.each{|id, quant| item_stacks[id] = quant}
+    end
+    item_stacks
+end
+
+def list_item_stacks item_stacks
+    puts "Current item list:"
+    item_stacks.each do |id, quant| 
+        if quant > 0
+            puts "#{id}: #{quant}"
+        end
+    end
+end
+
+def display_item_help items
+    puts "===================="
+    puts "item_id: name"
+    puts "--------------------"
+    items.each {|id, item| puts "#{id}: #{item.name}"}
+    puts "===================="
+end
+
+def create_new_item item_id, items, item_stacks, quantity
+    create_item = prompt_approval "Item #{item_id} doesn't exist. Create it?"
+    if create_item
+        puts "Creating item #{item_id}"
+        items[item_id] = Item.from_input item_id
+        item_stacks[item_id] = quantity
+    else
+        puts "Skipping..."
+    end
+end
+
+def parse_item_command line
+    item_id, quantity = line.split " "
+    quantity = Integer(quantity) rescue nil
+    [item_id, quantity]
+end
+
 def prompt_items items, start_items=nil
     puts "Enter items and quantities in the following format"
     puts "<item_id> <quantity>"
@@ -44,45 +86,24 @@ def prompt_items items, start_items=nil
     puts "Enter 'help' for list of items"
     puts "Enter a blank line when done"
 
-    item_stacks = Hash.new(0)
-    unless start_items.nil?
-        start_items.each{|id, quant| item_stacks[id] = quant}
-    end
+    item_stacks = init_item_stacks item_stacks
 
     loop do
-        puts "Current item list:"
-        item_stacks.each do |id, quant| 
-            if quant > 0
-                puts "#{id}: #{quant}"
-            end
-        end
+        list_item_stacks item_stacks
 
         line = prompt_str "--> " 
         break if line.empty?
 
         # Display help
         if line == 'help'
-            puts "===================="
-            puts "item_id: name"
-            puts "--------------------"
-            items.each {|id, item| puts "#{id}: #{item.name}"}
-            puts "===================="
             next
         end
 
-        item_id, quantity = line.split " "
-        quantity = Integer(quantity) rescue nil
+        item_id, quantity = parse_item_command line
         if quantity.nil?
             puts "Quantity must be an integer. try again"
         elsif not items.has_key? item_id
-            create_item = prompt_approval "Item #{item_id} doesn't exist. Create it?"
-            if create_item
-                puts "Creating item #{item_id}"
-                items[item_id] = Item.from_input item_id
-                item_stacks[item_id] = quantity
-            else
-                puts "Skipping..."
-            end
+            create_new_item item_id, items, item_stacks, quantity
         else
             item_stacks[item_id] = quantity
         end
