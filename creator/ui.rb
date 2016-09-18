@@ -86,7 +86,7 @@ def prompt_items items, start_items=nil
     puts "Enter 'help' for list of items"
     puts "Enter a blank line when done"
 
-    item_stacks = init_item_stacks item_stacks
+    item_stacks = init_item_stacks start_items
 
     loop do
         list_item_stacks item_stacks
