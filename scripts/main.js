@@ -74,7 +74,9 @@ var init_story = function init_story(story) {
     $('#author').html(story.author);
 
     //Get the story data and start the story
-    get_story(story.file).then(start_story).catch(console.err);
+    get_story(story.file)
+        .then(start_story)
+        .catch(console.err);
 };
 
 /**

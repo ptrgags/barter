@@ -44,16 +44,25 @@ class Option
             data["desc"] = @desc
         end
 
-        if @one_time
-            data["one_time"] = true
-        end
+        add_hash_flags data
+        add_hash_items data
 
+        data
+    end
+
+    def add_hash_items data
         if @give_items.any?
             data["give_items"] = @give_items
         end
 
         if @take_items.any?
             data["take_items"] = @take_items
+        end
+    end
+
+    def add_hash_flags data
+        if @one_time
+            data["one_time"] = true
         end
 
         if @barter
@@ -63,8 +72,6 @@ class Option
         if @back
             data["back"] = true
         end
-
-        data
     end
 
     def to_s
@@ -85,14 +92,22 @@ class Option
         @one_time = prompt_approval "Is this a one-time option?"
     end
 
-    def self.from_hash data
-        option = self.new data['from'], data['to']
-        option.desc = data['desc'] || ""
+    def self.hash_flags option, data
         option.back = data['back'] || false
         option.barter = data['barter'] || false
         option.one_time = data['one_time'] || false
+    end
+
+    def self.hash_items option, data
         option.give_items = data['give_items'] || []
         option.take_items = data['take_items'] || []
+    end
+
+    def self.from_hash data
+        option = self.new data['from'], data['to']
+        option.desc = data['desc'] || ""
+        self.hash_flags option, data
+        self.hash_items option, data
         option
     end
 
