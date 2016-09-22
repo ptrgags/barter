@@ -1,0 +1,5 @@
+<p>You unlock the door. It looks like a security room; there are many monitors
+with video footage.</p>
+
+<p>You notice that the video on every screen is paused to look at a single
+person. You.</p>

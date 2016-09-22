@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ruby-graphviz (1.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ruby-graphviz
+
+BUNDLED WITH
+   1.13.0

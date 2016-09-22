@@ -1,0 +1,11 @@
+<p>You are in a big room with many doors. The music is getting louder.</p>
+
+<p>On the left wall, there are two doors. The closer one just has a doorknob,
+the other one has a keyhole</p>
+
+<p>On the far wall, there is a single door marked "Laundry"</p> 
+
+<p>On the the right wall, there are again two doors. The closer one has
+a numeric keypad. The farther one is unmarked</p>
+
+<p>Other than this, the room is empty.</p>

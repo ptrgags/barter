@@ -1,0 +1,15 @@
+<p>You find yourself in the basement of the hotel. There is festive music
+coming from a different room</p>
+
+</p>There are many wooden chairs in one corner, probably set aside 
+for special events. One chair lies broken a few feet from the other chairs.</p>
+
+<p>Near to the corner of the room with the stairs, there is a loose
+floorboard</p>
+
+<p>In the corner diagonally across from the chairs, there is a cart of cleaning
+supplies</p>
+
+<p>In the last corner, there are various pipes along the wall.</p>
+
+<p>There is a door in the wall between the chairs and the pipes</p>
