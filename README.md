@@ -1,5 +1,7 @@
 # Barter (2014, 2016)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/242d9adf41f2423981182d0ac9bb8323)](https://www.codacy.com/app/ptrgags/barter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ptrgags/barter&amp;utm_campaign=Badge_Grade)
+
 Barter is a text-based game I started as an independent study project in my
 senior year of high school. Now in college, I am revisiting the idea, revising
 the code to use new features of JavaScript.
@@ -65,10 +67,11 @@ IDs for `Item`s and `Situation`s.
 An `Item` is an object in the game. Each item is represented in JSON with an
 object with the following keys:
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `name` | `String` | Short name of the item |
-| `desc` | `String` | (slightly) longer description of the item. |
+| Key        | Type      | Description |
+|------------|-----------|-------------|
+| `name`     | `String`  | Short name of the item |
+| `desc`     | `String`  | (slightly) longer description of the item. |
+| `key_item` | `Boolean` | Key items are not removed from inventory after usage |
 
 **ItemStack**:
 
@@ -97,19 +100,26 @@ keys:
 |--------------|----------------|----------|-------------|
 | `from`       | `situation_id` | Yes      | ID of source situation vertex |
 | `to`         | `situation_id` | Yes      | ID of destination situation vertex. Can be the same as from. |
-| `desc`       | `String`       | No*      | Description of the option to put on the option button |
+| `desc`       | `String`       | No       | Description of the option to put on the option button |
 | `barter`     | `Boolean`      | No       | If `true`, the button will be labeled "Barter `<give_items>` for `<take_items>`"
 | `one_time`   | `Boolean`      | No       | If `true`, this option can only be clicked once per game |
 | `give_items` | `[ItemStack]`  | No       | Array of items and quantities the player will lose when selecting this option |
 | `take_items` | `[ItemStack]`  | No       | Array of items and quantities the player will gain when selecting this option |
 
+## Barter Story Creator
+
+There is now a Ruby script that makes it easier to write Barter story
+files. It is located in the `creator/` directory. Simply run
+
+`./creator.rb` to use the program.
+
+Documentation for Barter Story Creator is in the
+[Story Creator README](creator/README.md)
 
 ## Future Developments
 
 In the future, I plan to add the following features:
 
-* Story creation program. Story JSON files are time-consuming to make, so it
-    would be nice to have a tool to shift the focus away from the file format
-    and towards the content.
 * Actually write a branching story to make the game playable.
 * Allow selecting between multiple stories.
+* Improvements to the UI and Barter Story Creator

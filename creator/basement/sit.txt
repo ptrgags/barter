@@ -1,0 +1,3 @@
+<p>You sit down in one of the chairs.</p>
+
+<p>...This was pointless.</p>

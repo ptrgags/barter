@@ -16,7 +16,14 @@
 <body>
     <div class="container-fluid">
         <h1>Barter</h1>
-        <p>A text-based game about bartering</p>
+        <p>A text-based game platform with bartering mechanics</p>
+        <p>
+            Select Story:
+            <select id="story-select">
+            </select>
+        </p>
+        <h2 id="story-title"></h2>
+        <p>By: <span id="author"></span></p>
         <div class="row">
             <div class="col-sm-6">
                 <div class="panel panel-primary">
@@ -41,9 +48,10 @@
                         <table id="inventoryTable" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <td><b>Item</b></td>
-                                    <td><b>Description</b></td>
-                                    <td><b>Quantity</b></td>
+                                    <th>Item</th>
+                                    <th>Description</td>
+                                    <th>Quantity</th>
+                                    <th>Key Item?</th>
                                 </tr>
                             </thead>
                             <tbody id="inventoryContents">
